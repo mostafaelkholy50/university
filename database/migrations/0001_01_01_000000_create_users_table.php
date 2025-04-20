@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('section')->nullable();
             $table->string('image')->default('user.jpg');
             $table->string('code')->nullable();
-            $table->dateTime('expire_code')->nullable();
+            $table->dateTime('code_created_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
