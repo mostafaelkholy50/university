@@ -41,8 +41,17 @@ return [
             'provider' => 'users',
         ],
         'api' => [
-            'driver'   => 'sanctum',
+            'driver' => 'sanctum',
             'provider' => 'users',
+        ],
+        'doctor-api' => [
+            'driver' => 'sanctum',
+            'provider' => 'doctors',
+        ],
+        // وضيف guard للأدمين:
+        'admin-api' => [
+            'driver' => 'sanctum',
+            'provider' => 'admins',
         ],
     ],
 
@@ -68,7 +77,14 @@ return [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
-
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
+        'doctors' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Doctor::class,
+        ],
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',

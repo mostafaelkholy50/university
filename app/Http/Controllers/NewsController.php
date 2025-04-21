@@ -14,9 +14,18 @@ class NewsController extends Controller
     public function index()
     {
         $news = news::all();
+        $data = $news->map(function ($news) {
+            return [
+                'title' => $news->title,
+                'content' => $news->content,
+                'date' => $news->date,
+                'section' => $news->section,
+                'image' => asset('storage/News_images/' . $news->image)
+            ];
+        });
         return response()->json([
             'message' => 'News fetched successfully.',
-            'news' => $news,
+            'news' => $data,
             'status' => 200
         ]);
     }
@@ -35,7 +44,7 @@ class NewsController extends Controller
         ]);
         if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('storage/News_images'), $imageName);
+            $request->image->move(public_path('storage/News_images/'), $imageName);
         } else {
             $imageName = 'Default.jpg';
         }
@@ -49,7 +58,14 @@ class NewsController extends Controller
         ]);
         return response()->json([
             'message' => 'News created successfully.',
-            'news' => $news,
+            'news' => [
+                'id' => $news->id,
+                'title' => $news->title,
+                'content' => $news->content,
+                'date' => $news->date,
+                'section' => $news->section,
+                'image' => asset('storage/News_images/' . $news->image)
+            ],
             'status' => 201
         ]);
     }
@@ -61,30 +77,46 @@ class NewsController extends Controller
     {
         return response()->json([
             'message' => 'News fetched successfully.',
-            'news' => $news,
+            'news' => [
+                'id' => $news->id,
+                'title' => $news->title,
+                'content' => $news->content,
+                'date' => $news->date,
+                'section' => $news->section,
+                'image' => asset('storage/News_images/' . $news->image)
+            ],
             'status' => 200
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(news $news)
+    public function search(Request $request)
     {
-        //
+        $searchTerm = $request->input('search');
+        $news = news::where('title', 'like', '%' . $searchTerm . '%')->get();
+        return response()->json([
+            'message' => 'News fetched successfully.',
+            'news' => [
+                'id' => $news->id,
+                'title' => $news->title,
+                'content' => $news->content,
+                'date' => $news->date,
+                'section' => $news->section,
+                'image' => asset('storage/News_images/' . $news->image)
+            ],
+            'status' => 200
+        ]);
     }
-
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, news $news)
     {
         $request->validate([
-            'title'   => 'nullable|string',
+            'title' => 'nullable|string',
             'content' => 'nullable|string',
-            'date'    => 'nullable|date',
+            'date' => 'nullable|date',
             'section' => 'nullable|string',
-            'image'   => 'nullable|file|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|file|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if (!$news) {
@@ -102,7 +134,7 @@ class NewsController extends Controller
             }
             // رفع الصورة الجديدة
             $imageName = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('storage/News_images'), $imageName);
+            $request->image->move(public_path('storage/News_images/'), $imageName);
         } else {
             $imageName = $news->image ?? 'Default.jpg';
         }
@@ -116,10 +148,16 @@ class NewsController extends Controller
             'image' => $imageName,
         ]);
 
-
         return response()->json([
             'message' => 'News updated successfully.',
-            'news' => $news,
+            'news' => [
+                'id' => $news->id,
+                'title' => $news->title,
+                'content' => $news->content,
+                'date' => $news->date,
+                'section' => $news->section,
+                'image' => asset('storage/News_images/' . $news->image)
+            ],
             'status' => 201
         ]);
     }
@@ -131,6 +169,12 @@ class NewsController extends Controller
     {
         if (!$news) {
             return response()->json(["status" => 404, "message" => "news not found"], 404);
+        }
+        if ($news->image !== 'Default.jpg') {
+            $oldImagePath = public_path('storage/News_images/' . $news->image);
+            if (file_exists($oldImagePath)) {
+                unlink($oldImagePath);
+            }
         }
         $news->delete();
         return response()->json([
