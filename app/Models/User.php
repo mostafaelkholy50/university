@@ -22,9 +22,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'Phone',
+        'phone',
         'specialty',
         'section',
+        'years',
         'image',
         'code',
         'code_created_at',
@@ -55,5 +56,13 @@ class User extends Authenticatable
     public function contact()
     {
         return $this->hasMany(contact::class);
+    }
+    public function commentNews()
+    {
+        return $this->hasMany(CommentNews::class);
+    }
+    public function schedule()
+    {
+        return $this->hasMany(schedule::class);
     }
 }

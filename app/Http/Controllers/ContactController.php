@@ -47,9 +47,7 @@ class ContactController extends Controller
             'email' => 'required|email',
             'message' => 'required|string',
         ]);
-        $user = Auth()->user()->id;
         $contact = contact::create([
-            'user_id' => $user,
             'frist_name' => $request->frist_name,
             'last_name' => $request->last_name,
             'email' => $request->email,

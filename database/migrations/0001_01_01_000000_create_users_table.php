@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('Phone')->unique()->nullable();
             $table->string('specialty')->nullable();
             $table->string('section')->nullable();
+            $table->string('years')->nullable();
             $table->string('image')->default( 'user.jpg');
             $table->string('code')->nullable();
             $table->dateTime('code_created_at')->nullable();

@@ -10,4 +10,8 @@ class news extends Model
     /** @use HasFactory<\Database\Factories\NewsFactory> */
     use HasFactory;
     protected $fillable = ['title', 'content', 'image', 'date', 'section'];
+    public function commentNews()
+    {
+        return $this->hasMany(CommentNews::class, 'news_id');
+    }
 }

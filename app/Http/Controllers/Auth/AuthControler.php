@@ -96,6 +96,9 @@ class AuthControler extends Controller
         if (!Hash::check($data['password'], $user->password)) {
             return response()->json(['message' => 'Password is incorrect'], 401);
         }
+        if ($user->code !== null) {
+            return response()->json(['message' => 'Please verify your account'], 401);
+        }
         $token = $user->createToken('auth_token')->plainTextToken;
         return response()->json([
             'message' => 'Login successfully.',

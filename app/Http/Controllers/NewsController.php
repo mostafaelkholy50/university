@@ -13,14 +13,23 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $news = news::all();
+        $news = news::with('commentNews')->get();
+
         $data = $news->map(function ($news) {
             return [
                 'title' => $news->title,
                 'content' => $news->content,
                 'date' => $news->date,
                 'section' => $news->section,
-                'image' => asset('storage/News_images/' . $news->image)
+                'image' => asset('storage/News_images/' . $news->image),
+                'comments' => $news->commentNews->map(function ($comment) {
+                    return [
+                        'id' => $comment->id,
+                        'user_id' => $comment->user_id,
+                        'comment' => $comment->comment,
+                        'rate' => $comment->rate,
+                    ];
+                }),
             ];
         });
         return response()->json([
@@ -36,37 +45,39 @@ class NewsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string',
+            'title'   => 'required|string',
             'content' => 'required|string',
-            'date' => 'required|date',
+            'date'    => 'required|date',
             'section' => 'required|string',
-            'image' => 'nullable|file|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image'   => 'nullable|file|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
         if ($request->hasFile('image')) {
-            $imageName = time() . '.' . $request->image->extension();
+            $imageName = time().'.'.$request->image->extension();
             $request->image->move(public_path('storage/News_images/'), $imageName);
         } else {
             $imageName = 'Default.jpg';
         }
 
-        $news = news::create([
-            'title' => $request->title,
+        $news = News::create([
+            'title'   => $request->title,
             'content' => $request->content,
-            'date' => $request->date,
+            'date'    => $request->date,
             'section' => $request->section,
-            'image' => $imageName,
+            'image'   => $imageName,
         ]);
+
         return response()->json([
             'message' => 'News created successfully.',
-            'news' => [
-                'id' => $news->id,
-                'title' => $news->title,
+            'news'    => [
+                'id'      => $news->id,
+                'title'   => $news->title,
                 'content' => $news->content,
-                'date' => $news->date,
+                'date'    => $news->date,
                 'section' => $news->section,
-                'image' => asset('storage/News_images/' . $news->image)
+                'image'   => asset('storage/News_images/'.$news->image),
             ],
-            'status' => 201
+            'status'  => 201
         ]);
     }
 
@@ -75,6 +86,7 @@ class NewsController extends Controller
      */
     public function show(news $news)
     {
+
         return response()->json([
             'message' => 'News fetched successfully.',
             'news' => [
@@ -83,7 +95,15 @@ class NewsController extends Controller
                 'content' => $news->content,
                 'date' => $news->date,
                 'section' => $news->section,
-                'image' => asset('storage/News_images/' . $news->image)
+                'image' => asset('storage/News_images/' . $news->image),
+                'comments' => $news->commentNews->map(function ($comment) {
+                    return [
+                        'id' => $comment->id,
+                        'user_id' => $comment->user_id,
+                        'comment' => $comment->comment,
+                        'rate' => $comment->rate,
+                    ];
+                }),
             ],
             'status' => 200
         ]);
@@ -92,7 +112,7 @@ class NewsController extends Controller
     public function search(Request $request)
     {
         $searchTerm = $request->input('search');
-        $news = news::where('title', 'like', '%' . $searchTerm . '%')->get();
+        $news = news::where('title', 'like', '%' . $searchTerm . '%')->first();
         return response()->json([
             'message' => 'News fetched successfully.',
             'news' => [

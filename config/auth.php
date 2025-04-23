@@ -53,6 +53,7 @@ return [
             'driver' => 'sanctum',
             'provider' => 'admins',
         ],
+
     ],
 
     /*
@@ -85,6 +86,7 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Doctor::class,
         ],
+
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
