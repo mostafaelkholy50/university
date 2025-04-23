@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\grades;
+use App\Models\subjects;
+use Illuminate\Http\Request;
+use App\Models\term_one_payments;
+use App\Models\term_two_payments;
 use App\Http\Requests\StoregradesRequest;
 use App\Http\Requests\UpdategradesRequest;
 
@@ -13,7 +17,7 @@ class GradesController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -27,9 +31,35 @@ class GradesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoregradesRequest $request)
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'subject_id' => 'required|exists:subjects,id',
+            'grade' => 'required|String|max:255',
+            'term' => 'required|string|max:255',
+        ]);
+        $subject = grades::where('user_id', $request->user_id)
+            ->where('subject_id', $request->subject_id)
+            ->where('term', $request->term)
+            ->first();
+        if ($subject) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Grade already exists',
+            ], 400);
+        }
+        $grade = new grades();
+        $grade->user_id = $request->user_id;
+        $grade->subject_id = $request->subject_id;
+        $grade->grade = $request->grade;
+        $grade->term = $request->term;
+        $grade->save();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Grade created successfully',
+            'grade' => $grade,
+        ], 201);
     }
 
     /**
@@ -37,23 +67,101 @@ class GradesController extends Controller
      */
     public function show(grades $grades)
     {
-        //
+        return response()->json([
+            'status' => 'success',
+            'grade' => $grades,
+        ], 200);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(grades $grades)
+    public function ShowGradesAuth()
     {
-        //
+        $user= auth()->user();
+        $termonepayments = term_one_payments::where('user_id', $user->id)->first();
+        if (!$termonepayments) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'ادفع رسوم الفصل الدراسي الأول',
+            ], 404);
+        }
+        $subjects = Subjects::where('specialty', $user->specialty)
+        ->where('years', $user->years)
+        ->where('term', 1)
+        ->with(['grades' => function ($query) use ($user) {
+            $query->where('user_id', $user->id)->where('term', 1);
+        }])
+        ->get();
+        if ($subjects->isEmpty()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No grades found for this user',
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'grades' => $subjects,
+        ], 200);
+    }
+    public function ShowGradesTwoAuth()
+    {
+        $user= auth()->user();
+        $termtwopayments = term_two_payments::where('user_id', $user->id)->first();
+        if (!$termtwopayments) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'ادفع رسوم الفصل الدراسي الثاني',
+            ], 404);
+        }
+        $subjects = Subjects::where('specialty', $user->specialty)
+        ->where('years', $user->years)
+        ->where('term', 2)
+        ->with(['grades' => function ($query) use ($user) {
+            $query->where('user_id', $user->id)->where('term', 2);
+        }])
+        ->get();
+        if ($subjects->isEmpty()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No grades found for this user',
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'grades' => $subjects,
+        ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdategradesRequest $request, grades $grades)
+    public function update(Request $request, grades $grades)
     {
-        //
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'subject_id' => 'required|exists:subjects,id',
+            'grade' => 'required|String|max:255',
+            'term' => 'required|string|max:255',
+        ]);
+        $subject = grades::where('user_id', $request->user_id)
+            ->where('subject_id', $request->subject_id)
+            ->where('term', $request->term)
+            ->first();
+        if (!$subject) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Grade not found',
+            ], 404);
+        }
+        $subject->user_id = $request->user_id;
+        $subject->subject_id = $request->subject_id;
+        $subject->grade = $request->grade;
+        $subject->term = $request->term;
+        $subject->save();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Grade updated successfully',
+            'grade' => $subject,
+        ], 200);
     }
 
     /**
@@ -61,6 +169,10 @@ class GradesController extends Controller
      */
     public function destroy(grades $grades)
     {
-        //
+        $grades->delete();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Grade deleted successfully',
+        ], 200);
     }
 }

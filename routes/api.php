@@ -1,16 +1,20 @@
 <?php
 
-use App\Http\Controllers\ScheduleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserControler;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\GradesController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Auth\AuthControler;
+use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\SubjectsController;
 use App\Http\Controllers\CommentNewsController;
 use App\Http\Controllers\Auth\AuthAdminController;
 use App\Http\Controllers\Auth\AuthDoctorController;
+use App\Http\Controllers\TermOnePaymentsController;
+use App\Http\Controllers\TermTwoPaymentsController;
 
 Route::post('/register', [AuthControler::class, 'register']);
 Route::post('/verify-code', [AuthControler::class, 'verifyCode']);
@@ -38,6 +42,8 @@ Route::middleware('auth:api')->prefix('/user')->group(function () {
     Route::post('/', [UserControler::class, 'updateAuth']);
     Route::delete('/', [UserControler::class, 'destroyAuth']);
     Route::get('/schedule', [ScheduleController::class, 'UserSchedule']);
+    Route::get('/grades/one', [GradesController::class, 'ShowGradesAuth']);
+    Route::get('/grades/Two', [GradesController::class, 'ShowGradesTwoAuth']);
 
 });
 //------------------------admin-----------------------
@@ -67,5 +73,20 @@ Route::middleware('auth:admin-api')->prefix('/admin')->group(function () {
     Route::post('/schedule', [ScheduleController::class, 'store']);
     Route::post('/schedule/{schedule}', [ScheduleController::class, 'update']);
     Route::delete('/schedule/{schedule}', [ScheduleController::class, 'destroy']);
+    Route::post('/subjects', [SubjectsController::class, 'store']);
+    Route::get('/subjects', [SubjectsController::class, 'index']);
+    Route::get('/subjects/{subjects}', [SubjectsController::class, 'show']);
+    Route::post('/subjects/{subjects}', [SubjectsController::class, 'update']);
+    Route::delete('/subjects/{subjects}', [SubjectsController::class, 'destroy']);
+    Route::post('/grades', [GradesController::class, 'store']);
+    Route::get('/grades/{grades}', [GradesController::class, 'show']);
+    Route::post('/grades/{grades}', [GradesController::class, 'update']);
+    Route::delete('/grades/{grades}', [GradesController::class, 'destroy']);
+    Route::post('/term_one_payments', [TermOnePaymentsController::class, 'store']);
+    Route::delete('/term_one_payments/{id}', [TermOnePaymentsController::class, 'destroy']);
+    Route::delete('/term_one_payments/all', [TermOnePaymentsController::class, 'deleteAll']);
+    Route::post('/term_two_payments', [TermTwoPaymentsController::class, 'store']);
+    Route::delete('/term_two_payments/{id}', [TermTwoPaymentsController::class, 'destroy']);
+    Route::delete('/term_two_payments/all', [TermTwoPaymentsController::class, 'deleteAll']);
 });
 

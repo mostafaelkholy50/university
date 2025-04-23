@@ -114,14 +114,14 @@ class UserControler extends Controller
 
     public function update(Request $request, $id)
     {
-        $user = User::find($id)->first();
+        $user = User::find($id);
         if (!$user) {
             return response()->json(["status" => 404, "message" => "user not found"], 404);
         }
         $request->validate([
             'name' => 'nullable|string',
             'email' => 'nullable|email|unique:users,email,' . $id,
-            'phone' => 'nullable|string',
+            'phone' => 'nullable|string|unique:users,phone,' . $id,
             'specialty' => 'nullable|string',
             'section' => 'nullable|string',
             'password' => 'nullable|confirmed|min:6',
@@ -202,7 +202,7 @@ class UserControler extends Controller
             'specialty' => $request->specialty,
             'section' => $request->section,
             'years' => $request->years,
-            'password' => $request->password ? Hash::make($request->password) : $user->password,    
+            'password' => $request->password ? Hash::make($request->password) : $user->password,
             'image' => $imageName,
         ]);
         return response()->json([

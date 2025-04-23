@@ -11,7 +11,16 @@ class subjects extends Model
     use HasFactory;
     protected $fillable = [
         'name',
-        'section',
+        'specialty',
+        'term',
         'years',
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function grades()
+    {
+        return $this->hasMany(grades::class, 'subject_id'); // واضح وصريح
+    }
 }

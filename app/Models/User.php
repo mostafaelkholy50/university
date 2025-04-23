@@ -65,4 +65,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(schedule::class);
     }
+    public function grades()
+    {
+        return $this->hasMany(grades::class);
+    }
+    public function subjects()
+    {
+        return $this->hasMany(subjects::class);
+    }
 }
