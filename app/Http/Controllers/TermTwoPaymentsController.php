@@ -59,23 +59,23 @@ class TermTwoPaymentsController extends Controller
         ], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(term_two_payments $term_two_payments)
-    {
-        $term_two_payments->delete();
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Payment deleted successfully',
-        ], 200);
-    }
-    public function deleteAll()
-    {
-        term_two_payments::truncate();
-        return response()->json([
-            'status' => 'success',
-            'message' => 'All payments deleted successfully',
-        ], 200);
-    }
+ function destroy(term_two_payments $termOnePayment)
+{
+    $termOnePayment->delete();
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Payment deleted successfully',
+    ], 200);
 }
+
+public function deleteAll()
+{
+    term_two_payments::query()->delete();
+    return response()->json([
+        'status' => 'success',
+        'message' => 'All payments deleted successfully',
+    ], 200);
+
+}
+}
+

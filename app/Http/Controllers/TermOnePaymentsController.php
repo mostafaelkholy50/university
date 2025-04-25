@@ -52,23 +52,23 @@ class TermOnePaymentsController extends Controller
 
 
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(term_one_payments $term_one_payments)
+    public function destroy(term_one_payments $termOnePayment)
     {
-        $term_one_payments->delete();
+        $termOnePayment->delete();
         return response()->json([
             'status' => 'success',
             'message' => 'Payment deleted successfully',
         ], 200);
     }
+
+
     public function deleteAll()
     {
-        term_one_payments::truncate();
+        term_one_payments::query()->delete();
         return response()->json([
             'status' => 'success',
             'message' => 'All payments deleted successfully',
         ], 200);
     }
+
 }

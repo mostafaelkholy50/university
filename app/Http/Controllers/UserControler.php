@@ -15,10 +15,12 @@ class UserControler extends Controller
 
         $data = $users->map(function ($user) {
             return [
+                'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
                 'phone' => $user->phone,
                 'specialty' => $user->specialty,
+                'years' => $user->years,
                 'section' => $user->section,
                 'image' => asset('storage/user/' . $user->image),
             ];
@@ -37,10 +39,12 @@ class UserControler extends Controller
             return response()->json(["status" => 404, "message" => "user not found"], 404);
         }
         $data = [
+            'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
             'phone' => $user->phone,
             'specialty' => $user->specialty,
+            'years' => $user->years,
             'section' => $user->section,
             'image' => asset('storage/user/' . $user->image),
         ];
@@ -57,10 +61,12 @@ class UserControler extends Controller
             return response()->json(["status" => 404, "message" => "user not found"], 404);
         }
         $data = [
+            'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
             'phone' => $user->phone,
             'specialty' => $user->specialty,
+            'years' => $user->years,
             'section' => $user->section,
             'image' => asset('storage/user/' . $user->image),
         ];
@@ -80,6 +86,7 @@ class UserControler extends Controller
             'phone' => 'required|string',
             'specialty' => 'required|string',
             'section' => 'required|string',
+            'years' => 'nullable|string',
             'image' => 'nullable|file|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         if ($request->hasFile('image')) {
@@ -95,6 +102,7 @@ class UserControler extends Controller
             'phone' => $request->phone,
             'specialty' => $request->specialty,
             'section' => $request->section,
+            'years' => $request->years,
             'image' => $imageName,
         ]);
         return response()->json([
@@ -105,6 +113,7 @@ class UserControler extends Controller
                 'email' => $user->email,
                 'phone' => $user->phone,
                 'specialty' => $user->specialty,
+                'years' => $user->years,
                 'section' => $user->section,
                 'image' => asset('storage/user/' . $imageName),
             ],

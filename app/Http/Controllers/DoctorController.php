@@ -23,9 +23,20 @@ class DoctorController extends Controller
                 'status' => 404
             ]);
         }
+        $data = $doctors->map(function ($doctor) {
+            return [
+                'id' => $doctor->id,
+                'name' => $doctor->name,
+                'email' => $doctor->email,
+                'phone' => $doctor->phone,
+                'specialization' => $doctor->specialization,
+                'experience_years' => $doctor->experience_years,
+                'image' => asset('storage/Doctors_images/' . $doctor->image),
+            ];
+        });
         return response()->json([
             'message' => 'Doctors fetched successfully.',
-            'doctors' => $doctors,
+            'doctors' => $data,
             'status' => 200
         ]);
     }
@@ -40,7 +51,15 @@ class DoctorController extends Controller
         $doctors = Auth::guard('doctor-api')->user();
         return response()->json([
             'message' => 'Doctors fetched successfully.',
-            'doctors' => $doctors,
+            'doctors' => [
+                'id' => $doctors->id,
+                'name' => $doctors->name,
+                'email' => $doctors->email,
+                'phone' => $doctors->phone,
+                'specialization' => $doctors->specialization,
+                'experience_years' => $doctors->experience_years,
+                'image' => asset('storage/Doctors_images/' . $doctors->image),
+            ],
             'status' => 200
         ]);
     }
@@ -48,7 +67,15 @@ class DoctorController extends Controller
     {
         return response()->json([
             'message' => 'Doctors fetched successfully.',
-            'doctors' => $doctor,
+            'doctors' => [
+                'id' => $doctor->id,
+                'name' => $doctor->name,
+                'email' => $doctor->email,
+                'phone' => $doctor->phone,
+                'specialization' => $doctor->specialization,
+                'experience_years' => $doctor->experience_years,
+                'image' => asset('storage/Doctors_images/' . $doctor->image),
+            ],
             'status' => 200
         ]);
     }
