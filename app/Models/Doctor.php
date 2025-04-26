@@ -20,4 +20,8 @@ class Doctor extends Model
         'experience_years',
         'image',
     ];
+    public function courses()
+    {
+        return $this->hasMany(courses::class);
+    }
 }
