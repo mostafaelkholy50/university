@@ -20,7 +20,7 @@ class LectureController extends Controller
             return [
                 'id' => $lecture->id,
                 'doctor_id' => $lecture->doctor_id,
-                'doctor_image' => asset('storage/doctors/' . $lecture->doctor->image),
+                'doctor_image' => asset('storage/Doctors_images/' . $lecture->doctor->image),
                 'doctor_specialization' => $lecture->doctor->specialization,
                 'doctor_experience_years' => $lecture->doctor->experience_years,
                 'doctor_phone' => $lecture->doctor->phone,
@@ -63,7 +63,7 @@ class LectureController extends Controller
             return [
                 'id' => $lecture->id,
                 'doctor_id' => $lecture->doctor_id,
-                'doctor_image' => asset('storage/doctors/' . $lecture->doctor->image),
+                'doctor_image' => asset('storage/Doctors_images/' . $lecture->doctor->image),
                 'doctor_specialization' => $lecture->doctor->specialization,
                 'doctor_experience_years' => $lecture->doctor->experience_years,
                 'doctor_phone' => $lecture->doctor->phone,
@@ -104,7 +104,7 @@ class LectureController extends Controller
             return [
                 'id' => $lecture->id,
                 'doctor_id' => $lecture->doctor_id,
-                'doctor_image' => asset('storage/doctors/' . $lecture->doctor->image),
+                'doctor_image' => asset('storage/Doctors_images/' . $lecture->doctor->image),
                 'doctor_specialization' => $lecture->doctor->specialization,
                 'doctor_experience_years' => $lecture->doctor->experience_years,
                 'doctor_phone' => $lecture->doctor->phone,
@@ -131,7 +131,7 @@ class LectureController extends Controller
             'lectures' => [
                 'id' => $lecture->id,
                 'doctor_id' => $lecture->doctor_id,
-                'doctor_image' => asset('storage/doctors/' . $lecture->doctor->image),
+                'doctor_image' => asset('storage/Doctors_images/' . $lecture->doctor->image),
                 'doctor_specialization' => $lecture->doctor->specialization,
                 'doctor_experience_years' => $lecture->doctor->experience_years,
                 'doctor_phone' => $lecture->doctor->phone,
@@ -166,7 +166,7 @@ class LectureController extends Controller
         if ($request->hasFile('pdf')) {
             $file = $request->file('pdf');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $file->storeAs('lectures', $filename, 'public');
+            $path = $request->file('pdf')->store('pdfs', 'public');
             // بنخزن بس الاسم علشان تعرضه بعدين بـ asset('storage/lectures/'.$filename)
             $data['pdf'] = $filename;
         }
@@ -227,8 +227,7 @@ class LectureController extends Controller
             // – نخزن الجديد
             $file = $request->file('pdf');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $file->storeAs('lectures', $filename, 'public');
-
+            $path = $request->file('pdf')->store('pdfs', 'public');
             // – نخزن اسمه في الداتا للتحديث
             $data['pdf'] = $filename;
         }
@@ -251,7 +250,7 @@ class LectureController extends Controller
             'lecture' => [
                 'id' => $lecture->id,
                 'doctor_id' => $lecture->doctor_id,
-                'doctor_image' => asset('storage/doctors/' . $lecture->doctor->image),
+                'doctor_image' => asset('storage/Doctors_images/' . $lecture->doctor->image),
                 'doctor_specialization' => $lecture->doctor->specialization,
                 'doctor_experience_years' => $lecture->doctor->experience_years,
                 'doctor_phone' => $lecture->doctor->phone,
