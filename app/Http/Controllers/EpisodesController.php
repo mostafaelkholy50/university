@@ -59,27 +59,37 @@ class EpisodesController extends Controller
     public function show(episodes $episodes)
     {
         $user = auth()->user();
-        $enroll= enroll::where('course_id', $episodes->course_id)->where('user_id', $user->id)->first();
-        if ($enroll->isEmpty()) {
+
+        // جلب سجل التسجيل (أو null لو مش موجود)
+        $enroll = Enroll::where('course_id', $episodes->course_id)
+                        ->where('user_id', $user->id)
+                        ->first();
+
+        // لو مفيش تسجيل
+        if (! $enroll) {
             return response()->json([
                 'message' => 'You are not enrolled in this course.',
-                'status' => 403
-            ]);
+                'status'  => 403,
+            ], 403);
         }
-        if($enroll->payment_status == 'unpaid') {
+
+        // لو مسجّل لكن ما دفعش
+        if ($enroll->payment_status === 'unpaid') {
             return response()->json([
                 'message' => 'You have not paid for this course.',
-                'status' => 403
-            ]);
+                'status'  => 403,
+            ], 403);
         }
-       return response()->json([
+
+        // كل حاجة تمام، ارجع بيانات الحلقة
+        return response()->json([
             'message' => 'Episode fetched successfully.',
             'episode' => [
                 'id'          => $episodes->id,
                 'course_id'   => $episodes->course_id,
                 'title'       => $episodes->title,
                 'description' => $episodes->description,
-                'Video'       => url('storage/'.$episodes->Video),
+                'video_url'   => url('storage/' . $episodes->video),
             ],
         ], 200);
     }
