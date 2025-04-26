@@ -19,7 +19,7 @@ class EpisodesController extends Controller
             'course_id'   => 'required|exists:courses,id',
             'title'       => 'required|string|max:255',
             'description' => 'required|string',
-            'Video'       => 'nullable|file|mimes:mp4,mkv,avi|max:2048',
+            'Video'       => 'nullable|file|mimes:mp4,mkv,avi|max:204800',
         ]);
 
         $episode = new episodes(); // الاسم بالـStudlyCase وعلى فكرة الأفضل تسمي الحقل video
@@ -78,7 +78,7 @@ class EpisodesController extends Controller
             'course_id'   => 'required|exists:courses,id',
             'title'       => 'required|string|max:255',
             'description' => 'required|string',
-            'Video'       => 'nullable|file|mimes:mp4,mkv,avi|max:2048',
+            'Video'       => 'nullable|file|mimes:mp4,mkv,avi|max:204800',
         ]);
 
         $episodes->course_id  = $request->course_id;
