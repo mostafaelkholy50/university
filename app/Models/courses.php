@@ -23,6 +23,6 @@ class courses extends Model
     }
     public function episodes()
     {
-        return $this->hasMany(episodes::class);
+        return $this->hasMany(episodes::class, 'course_id');
     }
 }

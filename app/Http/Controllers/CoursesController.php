@@ -140,7 +140,7 @@ class CoursesController extends Controller
     public function show(courses $courses)
     {
         $episode = $courses->episodes()->get();
-        if (!$episode) {
+                if (!$episode) {
             return response()->json([
                 'message' => 'No episodes found for this course.',
                 'status' => 404
