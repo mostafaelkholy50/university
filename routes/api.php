@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LectureController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserControler;
@@ -32,6 +33,9 @@ Route::post('/contact', [ContactController::class, 'store']);
 //-----------------------Courses-----------------------
 Route::get('/courses', [CoursesController::class, 'index']);
 Route::get('/courses/{courses}', [CoursesController::class, 'show']);
+//-----------------------lectures-----------------------
+Route::get('/lectures', [LectureController::class, 'index']);
+Route::get('/lectures/{lectures}', [LectureController::class, 'showID']);
 //-----------------------Doctor-----------------------
 Route::post('/doctor/register', [AuthDoctorController::class, 'register']);
 Route::post('/doctor/login', [AuthDoctorController::class, 'login']);
@@ -51,6 +55,12 @@ Route::middleware('auth:doctor-api')->prefix('/doctor')->group(function () {
     Route::post('/episodes', [EpisodesController::class, 'store']);
     Route::post('/episodes/{episodes}', [EpisodesController::class, 'update']);
     Route::delete('/episodes/{episodes}', [EpisodesController::class, 'destroy']);
+    //-----------------------Lectures-----------------------
+    Route::get('/lectures', [LectureController::class,'showDoctor']);
+    Route::get('/lectures/{lectures}', [LectureController::class, 'showID']);
+    Route::post('/lectures', [LectureController::class, 'store']);
+    Route::post('/lectures/{lectures}', [LectureController::class, 'update']);
+    Route::delete('/lectures/{lectures}', [LectureController::class, 'destroy']);
 });
 //-------------------------User-------------------------
 
@@ -70,6 +80,9 @@ Route::middleware('auth:api')->prefix('/user')->group(function () {
     Route::get('/enroll', [EnrollController::class, 'show']);
     Route::post('/enroll', [EnrollController::class, 'store']);
     Route::delete('/enroll/{enroll}', [EnrollController::class, 'destroy']);
+    //-----------------------lectures-----------------------
+    Route::get('/lectures', [LectureController::class, 'show']);
+    Route::get('/lectures/{lectures}', [LectureController::class, 'showID']);
 });
 //------------------------admin-----------------------
 Route::post('/admin/login', [AuthAdminController::class, 'login']);
