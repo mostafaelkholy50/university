@@ -89,7 +89,20 @@ class EpisodesController extends Controller
                 'course_id'   => $episodes->course_id,
                 'title'       => $episodes->title,
                 'description' => $episodes->description,
-                'video_url'   => url('storage/' . $episodes->video),
+                'video_url'   => url('storage/'.$episodes->Video),
+            ],
+        ], 200);
+    }
+    public function showID(episodes $episodes)
+    {
+        return response()->json([
+            'message' => 'Episode fetched successfully.',
+            'episode' => [
+                'id'          => $episodes->id,
+                'course_id'   => $episodes->course_id,
+                'title'       => $episodes->title,
+                'description' => $episodes->description,
+                'video_url'   => url('storage/'.$episodes->Video),
             ],
         ], 200);
     }

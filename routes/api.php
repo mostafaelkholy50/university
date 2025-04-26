@@ -47,7 +47,7 @@ Route::middleware('auth:doctor-api')->prefix('/doctor')->group(function () {
     Route::delete('/courses/{courses}', [CoursesController::class, 'destroy']);
     //-----------------------episodes-----------------------
     Route::get('/episodes', [EpisodesController::class, 'index']);
-    Route::get('/episodes/{episodes}', [EpisodesController::class, 'show']);
+    Route::get('/episodes/{episodes}', [EpisodesController::class, 'showid']);
     Route::post('/episodes', [EpisodesController::class, 'store']);
     Route::post('/episodes/{episodes}', [EpisodesController::class, 'update']);
     Route::delete('/episodes/{episodes}', [EpisodesController::class, 'destroy']);
