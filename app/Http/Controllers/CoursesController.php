@@ -67,6 +67,7 @@ class CoursesController extends Controller
             $imageName = time() . '.' . $request->image->extension();
             $request->image->move(public_path('storage/Courses_images/'), $imageName);
         }
+        $course->image = $imageName ;
         $course->category = $request->category;
         $course->date = $request->date;
         $course->save();
@@ -113,6 +114,7 @@ class CoursesController extends Controller
         } else {
             $imageName = $user->image ?? 'courses.jpg';
         }
+        $courses->image = $imageName;
         $courses->category = $request->category;
         $courses->date = $request->date;
         $courses->save();
