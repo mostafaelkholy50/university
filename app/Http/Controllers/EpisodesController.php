@@ -89,7 +89,7 @@ class EpisodesController extends Controller
                 'course_id'   => $episodes->course_id,
                 'title'       => $episodes->title,
                 'description' => $episodes->description,
-                'video_url'   => url('storage/' . $episodes->video),
+                'video_url'   => asset('storage/episodes_videos/' . $episodes->video),
             ],
         ], 200);
     }
@@ -130,7 +130,7 @@ class EpisodesController extends Controller
                 'course_id'   => $episodes->course_id,
                 'title'       => $episodes->title,
                 'description' => $episodes->description,
-                'Video'       => url('storage/'.$episodes->Video),
+                'Video'       => asset('storage/episodes_videos/' . $episodes->video),
             ],
         ], 200);
     }
@@ -141,8 +141,8 @@ class EpisodesController extends Controller
     public function destroy(episodes $episodes)
     {
         // حذف الفيديو القديم إذا كان موجود
-        if ($episodes->Video && file_exists(public_path('storage/'.$episodes->Video))) {
-            unlink(public_path('storage/'.$episodes->Video));
+        if ($episodes->Video && file_exists(public_path('storage/episodes_videos/'.$episodes->Video))) {
+            unlink(public_path('storage/episodes_videos/'.$episodes->Video));
         }
 
         $episodes->delete();
