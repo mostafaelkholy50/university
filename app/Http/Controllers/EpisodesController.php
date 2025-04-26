@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\enroll;
 use App\Models\episodes;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreepisodesRequest;
@@ -58,7 +59,7 @@ class EpisodesController extends Controller
     public function show(episodes $episodes)
     {
         $user = auth()->user();
-        $enroll= episodes::where('course_id', $episodes->course_id)->where('user_id', $user->id)->get();
+        $enroll= enroll::where('course_id', $episodes->course_id)->where('user_id', $user->id)->get();
         if ($enroll->isEmpty()) {
             return response()->json([
                 'message' => 'You are not enrolled in this course.',
