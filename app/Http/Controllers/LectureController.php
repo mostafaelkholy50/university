@@ -47,6 +47,7 @@ class LectureController extends Controller
         $user = auth()->user();
         $lectures = Lecture::where('specialty', $user->specialty)
             ->where('years', $user->years)
+            ->with('doctor')
             ->get();
 
         // إذا مفيش محاضرات، نرجع رسالة بالإنجليزي
