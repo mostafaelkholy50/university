@@ -65,7 +65,7 @@ Route::middleware('auth:api')->prefix('/user')->group(function () {
     //-----------------------courses-----------------------
     Route::get('/courses', [CoursesController::class, 'index']);
     Route::get('/courses/{courses}', [CoursesController::class, 'show']);
-    Route::get('/episodes/{episodes}', [ScheduleController::class, 'show']);
+    Route::get('/episodes/{episodes}', [episodesController::class, 'show']);
     //-----------------------Enroll-----------------------
     Route::get('/enroll', [EnrollController::class, 'show']);
     Route::post('/enroll', [EnrollController::class, 'store']);
