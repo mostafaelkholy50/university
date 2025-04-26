@@ -152,14 +152,21 @@ class CoursesController extends Controller
                 'course_id' => $ep->course_id,
                 'title' => $ep->title,
                 'description' => $ep->description,
-                'Video' => url('storage/' . $ep->Video),
             ];
         });
+        $doctor = $courses->doctor;
         return response()->json([
             'message' => 'Episodes fetched successfully.',
             'course' => [
                 'id' => $courses->id,
-                'doctor_id' => $courses->doctor_id,
+                'doctor_id' => [
+                    'id' => $doctor->id,
+                    'name' => $doctor->name,
+                    'email' => $doctor->email,
+                    'image' => asset('storage/Doctors_images/' . $doctor->image),
+                    'specialization' => $doctor->specialization,
+                    'phone' => $doctor->phone,
+                ],
                 'title' => $courses->title,
                 'description' => $courses->description,
                 'image' => asset('storage/Courses_images/' . $courses->image),

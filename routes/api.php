@@ -1,15 +1,16 @@
 <?php
 
-use App\Http\Controllers\EpisodesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserControler;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\EnrollController;
 use App\Http\Controllers\GradesController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\Auth\AuthControler;
+use App\Http\Controllers\EpisodesController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SubjectsController;
 use App\Http\Controllers\CommentNewsController;
@@ -61,9 +62,14 @@ Route::middleware('auth:api')->prefix('/user')->group(function () {
     Route::get('/schedule', [ScheduleController::class, 'UserSchedule']);
     Route::get('/grades/one', [GradesController::class, 'ShowGradesAuth']);
     Route::get('/grades/Two', [GradesController::class, 'ShowGradesTwoAuth']);
+    //-----------------------courses-----------------------
     Route::get('/courses', [CoursesController::class, 'index']);
     Route::get('/courses/{courses}', [CoursesController::class, 'show']);
     Route::get('/episodes/{episodes}', [ScheduleController::class, 'show']);
+    //-----------------------Enroll-----------------------
+    Route::get('/enroll', [EnrollController::class, 'show']);
+    Route::post('/enroll', [EnrollController::class, 'store']);
+    Route::delete('/enroll/{enroll}', [EnrollController::class, 'destroy']);
 });
 //------------------------admin-----------------------
 Route::post('/admin/login', [AuthAdminController::class, 'login']);
@@ -115,7 +121,11 @@ Route::middleware('auth:admin-api')->prefix('/admin')->group(function () {
     Route::post('/term_two_payments', [TermTwoPaymentsController::class, 'store']);
     Route::delete('/term_two_payments/{id}', [TermTwoPaymentsController::class, 'destroy']);
     Route::delete('/term_two_payments/all', [TermTwoPaymentsController::class, 'deleteAll']);
-    //-----------------------Courses-----------------------
+    //-----------------------enroll-----------------------
+    Route::get('/enroll', [EnrollController::class, 'index']);
+    Route::get('/enroll/{enroll}', [EnrollController::class, 'showid']);
+    Route::post('/enroll/{enroll}', [EnrollController::class, 'update']);
+    Route::delete('/enroll/{enroll}', [EnrollController::class, 'destroy']);
 
 });
 

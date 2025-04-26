@@ -57,6 +57,20 @@ class EpisodesController extends Controller
      */
     public function show(episodes $episodes)
     {
+        $user = auth()->user();
+        $enroll= episodes::where('course_id', $episodes->course_id)->where('user_id', $user->id)->get();
+        if ($enroll->isEmpty()) {
+            return response()->json([
+                'message' => 'You are not enrolled in this course.',
+                'status' => 403
+            ]);
+        }
+        if($enroll->payment_status == 'unpaid') {
+            return response()->json([
+                'message' => 'You have not paid for this course.',
+                'status' => 403
+            ]);
+        }
        return response()->json([
             'message' => 'Episode fetched successfully.',
             'episode' => [
