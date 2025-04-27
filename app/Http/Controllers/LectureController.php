@@ -164,14 +164,8 @@ class LectureController extends Controller
             'pdf'         => 'required|mimes:pdf|max:20480',
         ]);
 
-        if ($request->hasFile('pdf')) {
-            $file     = $request->file('pdf');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            // يخزن فعليًا في storage/app/public/lectures
-            $path = $file->storeAs('lectures', $filename, 'public');
-            // خزن المسار الكامل (folder + filename) عشان يبقى ثابت
-            $data['pdf'] = $path;
-        }
+        $path = $request->file('pdf')->store('pdfs', 'public');
+        // – نخزن اسمه في الداتا للتحديث
 
         $lecture = Lecture::create([
             'doctor_id'   => $doctor->id,
@@ -179,7 +173,7 @@ class LectureController extends Controller
             'description' => $data['description'],
             'specialty'   => $data['specialty'],
             'years'       => $data['years'],
-            'pdf'         => $data['pdf'],
+            'pdf'         => $path,
         ]);
 
         // ابني اللينك الصح باستخدام Storage
