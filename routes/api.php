@@ -57,10 +57,10 @@ Route::middleware('auth:doctor-api')->prefix('/doctor')->group(function () {
     Route::delete('/episodes/{episodes}', [EpisodesController::class, 'destroy']);
     //-----------------------Lectures-----------------------
     Route::get('/lectures', [LectureController::class,'showDoctor']);
-    Route::get('/lectures/{lectures}', [LectureController::class, 'showID']);
+    Route::get('/lectures/{lecture}', [LectureController::class, 'showID']);
     Route::post('/lectures', [LectureController::class, 'store']);
-    Route::post('/lectures/{lectures}', [LectureController::class, 'update']);
-    Route::delete('/lectures/{lectures}', [LectureController::class, 'destroy']);
+    Route::post('/lectures/{lecture}', [LectureController::class, 'update']);
+    Route::delete('/lectures/{lecture}', [LectureController::class, 'destroy']);
 });
 //-------------------------User-------------------------
 

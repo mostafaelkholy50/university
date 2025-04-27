@@ -164,26 +164,24 @@ class LectureController extends Controller
             'pdf'         => 'required|mimes:pdf|max:20480',
         ]);
 
-        $path = $request->file('pdf')->store('pdfs', 'public');
-        // – نخزن اسمه في الداتا للتحديث
-
+        if ($request->hasFile('pdf')) {
+            $pdfName = time() . '.' . $request->pdf->extension();
+            $request->pdf->move(public_path('storage/lectures/'), $pdfName);
+        }
         $lecture = Lecture::create([
             'doctor_id'   => $doctor->id,
             'title'       => $data['title'],
             'description' => $data['description'],
             'specialty'   => $data['specialty'],
             'years'       => $data['years'],
-            'pdf'         => $path,
+            'pdf'         => $pdfName,
         ]);
-
-        // ابني اللينك الصح باستخدام Storage
-        $pdfUrl = Storage::disk('public')->url($lecture->pdf);
 
         return response()->json([
             'lecture' => [
                 'id'                      => $lecture->id,
                 'doctor_id'               => $lecture->doctor_id,
-                'doctor_image'            => asset('storage/doctors/' . $lecture->doctor->image),
+                'doctor_image'            => asset('storage/Doctors_images/' . $lecture->doctor->image),
                 'doctor_specialization'   => $lecture->doctor->specialization,
                 'doctor_experience_years' => $lecture->doctor->experience_years,
                 'doctor_phone'            => $lecture->doctor->phone,
@@ -193,7 +191,7 @@ class LectureController extends Controller
                 'description'             => $lecture->description,
                 'specialty'               => $lecture->specialty,
                 'years'                   => $lecture->years,
-                'pdf'                     => $pdfUrl,
+                'pdf'                     => asset('storage/lectures/' . $lecture->pdf),
             ],
             'message' => 'Lecture created successfully',
             'status'  => 200,
@@ -217,17 +215,16 @@ class LectureController extends Controller
 
         // 2. لو فيه PDF جديد مرفوع:
         if ($request->hasFile('pdf')) {
-            // – نمسح القديم
-            Storage::disk('public')->delete('lectures/' . $lecture->pdf);
-
-            // – نخزن الجديد
-            $file = $request->file('pdf');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $path = $request->file('pdf')->store('pdfs', 'public');
-            // – نخزن اسمه في الداتا للتحديث
-            $data['pdf'] = $filename;
+            if ($lecture->pdf !== 'user.jpg') {
+                $oldPdfPath = public_path('storage/lectures/' . $lecture->pdf);
+                if (file_exists($oldPdfPath)) {
+                    Storage::disk('public')->delete('lectures/' . $lecture->pdf);
+                }
+            }
+            // رفع الصورة الجديدة
+            $pdfName = time() . '.' . $request->pdf->extension();
+            $request->pdf->move(public_path('storage/lectures/'), $pdfName);
         }
-
         // 3. نحدّث السجل
         $lecture->update([
             'doctor_id' => $lecture->doctor_id,
@@ -235,12 +232,10 @@ class LectureController extends Controller
             'description' => $data['description'],
             'specialty' => $data['specialty'],
             'years' => $data['years'],
-            // لو ما اترفعتش pdf جديد هتفضل نفس القيمة
-            'pdf' => $data['pdf'] ?? $lecture->pdf,
+            'pdf' =>$pdfName ,
         ]);
 
         // 4. نبني الرابط الجديد للـ PDF
-        $pdfUrl = asset('storage/lectures/' . $lecture->pdf);
 
         return response()->json([
             'lecture' => [
@@ -256,7 +251,7 @@ class LectureController extends Controller
                 'description' => $lecture->description,
                 'specialty' => $lecture->specialty,
                 'years' => $lecture->years,
-                'pdf' => $pdfUrl,
+                'pdf' =>asset('storage/lectures/' . $lecture->pdf),
             ],
             'message' => 'Lecture updated successfully',
             'status' => 200,
@@ -281,5 +276,4 @@ class LectureController extends Controller
             'status' => 200,
         ]);
     }
-
 }
