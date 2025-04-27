@@ -29,4 +29,8 @@ class courses extends Model
     {
         return $this->hasMany(enroll::class, 'course_id');
     }
+    public function comments()
+    {
+        return $this->hasMany(CommentCourse::class, 'course_id');
+    }
 }

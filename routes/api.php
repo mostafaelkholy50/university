@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\LectureController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserControler;
@@ -10,11 +9,13 @@ use App\Http\Controllers\EnrollController;
 use App\Http\Controllers\GradesController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CoursesController;
+use App\Http\Controllers\LectureController;
 use App\Http\Controllers\Auth\AuthControler;
 use App\Http\Controllers\EpisodesController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SubjectsController;
 use App\Http\Controllers\CommentNewsController;
+use App\Http\Controllers\CommentCourseController;
 use App\Http\Controllers\Auth\AuthAdminController;
 use App\Http\Controllers\Auth\AuthDoctorController;
 use App\Http\Controllers\TermOnePaymentsController;
@@ -83,6 +84,8 @@ Route::middleware('auth:api')->prefix('/user')->group(function () {
     //-----------------------lectures-----------------------
     Route::get('/lectures', [LectureController::class, 'show']);
     Route::get('/lectures/{lecture}', [LectureController::class, 'showID']);
+        //-----------------------Comments-----------------------
+        Route::post('/courses/comments', [CommentCourseController::class, 'store']);
 });
 //------------------------admin-----------------------
 Route::post('/admin/login', [AuthAdminController::class, 'login']);
