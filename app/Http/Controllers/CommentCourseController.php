@@ -27,7 +27,7 @@ class CommentCourseController extends Controller
             'comment' => 'required|string',
             'rate' => 'required|integer|min:1|max:5',
         ]);
-        $user = auth()->user()->id;
+        $user = auth()->user();
         $comment = CommentCourse::where('user_id', $user)
             ->where('course_id', $request->course_id)
             ->first();
@@ -50,7 +50,7 @@ class CommentCourseController extends Controller
         ], 201);
     }
 
-  
+
     /**
      * Display the specified resource.
      */

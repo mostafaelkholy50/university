@@ -154,6 +154,7 @@ class CoursesController extends Controller
                 'description' => $ep->description,
             ];
         });
+        $comments = $courses->comments;
         $doctor = $courses->doctor;
         return response()->json([
             'message' => 'Episodes fetched successfully.',
@@ -174,6 +175,7 @@ class CoursesController extends Controller
                 'date' => $courses->date,
                 'episodes' => $data
             ],
+            'comments' => $comments,
             'status' => 200
         ]);
     }
