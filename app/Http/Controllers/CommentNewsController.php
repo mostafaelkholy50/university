@@ -35,7 +35,17 @@ class CommentNewsController extends Controller
         ]);
         return response()->json([
             'message' => 'Comment created successfully.',
-            'data' => $comment
+            'data' => [
+                'id' => $comment->id,
+                'news_id' => $comment->news_id,
+                'user_id' => [
+                    'id' => $comment->user_id,
+                    'name' => $comment->user->name,
+                    'image' => asset('storage/Users_images/' . $comment->user->image),
+                ],
+                'comment' => $comment->comment,
+                'rate' => $comment->rate,
+            ]
         ], 201);
     }
 
