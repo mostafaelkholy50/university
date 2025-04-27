@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('comment_courses', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('course_id')->constrained()->onDelete('cascade');
+            $table->text('comment');
+            $table->integer('rate')->default(0);
             $table->timestamps();
         });
     }
