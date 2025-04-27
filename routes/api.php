@@ -82,7 +82,7 @@ Route::middleware('auth:api')->prefix('/user')->group(function () {
     Route::delete('/enroll/{enroll}', [EnrollController::class, 'destroy']);
     //-----------------------lectures-----------------------
     Route::get('/lectures', [LectureController::class, 'show']);
-    Route::get('/lectures/{lectures}', [LectureController::class, 'showID']);
+    Route::get('/lectures/{lecture}', [LectureController::class, 'showID']);
 });
 //------------------------admin-----------------------
 Route::post('/admin/login', [AuthAdminController::class, 'login']);
