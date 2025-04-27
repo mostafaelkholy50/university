@@ -20,5 +20,5 @@ class Lecture extends Model
     public function doctor()
     {
         return $this->belongsTo(Doctor::class, 'doctor_id');
-    }
+    }   
 }

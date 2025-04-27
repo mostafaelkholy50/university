@@ -128,6 +128,7 @@ class LectureController extends Controller
 
     public function showID(Lecture $lecture)
     {
+        $lecture= Lecture::with('doctor')->find($lecture->id);
         return response()->json([
             'lectures' => [
                 'id' => $lecture->id,
@@ -151,60 +152,60 @@ class LectureController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(Request $request)
     {
         $doctor = auth()->user();
-        // 1. Validation زي ما انت عاملها
         $data = $request->validate([
-            'title' => 'required|string|max:255',
+            'title'       => 'required|string|max:255',
             'description' => 'required|string|max:1000',
-            'specialty' => 'required|string|max:255',
-            'years' => 'required|string|max:255',
-            'pdf' => 'required|mimes:pdf|max:20480',
+            'specialty'   => 'required|string|max:255',
+            'years'       => 'required|string|max:255',
+            'pdf'         => 'required|mimes:pdf|max:20480',
         ]);
 
-        // 2. لو فيه PDF مرفوع خزن اسمه في المصفوفة
         if ($request->hasFile('pdf')) {
-            $file = $request->file('pdf');
+            $file     = $request->file('pdf');
             $filename = time() . '_' . $file->getClientOriginalName();
-            $path = $request->file('pdf')->store('pdfs', 'public');
-            // بنخزن بس الاسم علشان تعرضه بعدين بـ asset('storage/lectures/'.$filename)
-            $data['pdf'] = $filename;
+            // يخزن فعليًا في storage/app/public/lectures
+            $path = $file->storeAs('lectures', $filename, 'public');
+            // خزن المسار الكامل (folder + filename) عشان يبقى ثابت
+            $data['pdf'] = $path;
         }
 
-        // 3. انشئ الـ Lecture
         $lecture = Lecture::create([
-            'doctor_id' => $doctor->id,
-            'title' => $data['title'],
+            'doctor_id'   => $doctor->id,
+            'title'       => $data['title'],
             'description' => $data['description'],
-            'specialty' => $data['specialty'],
-            'years' => $data['years'],
-            'pdf' => $filename,
+            'specialty'   => $data['specialty'],
+            'years'       => $data['years'],
+            'pdf'         => $data['pdf'],
         ]);
 
-        // 4. جهّز الرابط للرد
-        $pdfUrl = asset('storage/lectures/' . $lecture->pdf);
+        // ابني اللينك الصح باستخدام Storage
+        $pdfUrl = Storage::disk('public')->url($lecture->pdf);
 
         return response()->json([
             'lecture' => [
-                'id' => $lecture->id,
-                'doctor_id' => $lecture->doctor_id,
-                'doctor_image' => asset('storage/doctors/' . $lecture->doctor->image),
-                'doctor_specialization' => $lecture->doctor->specialization,
+                'id'                      => $lecture->id,
+                'doctor_id'               => $lecture->doctor_id,
+                'doctor_image'            => asset('storage/doctors/' . $lecture->doctor->image),
+                'doctor_specialization'   => $lecture->doctor->specialization,
                 'doctor_experience_years' => $lecture->doctor->experience_years,
-                'doctor_phone' => $lecture->doctor->phone,
-                'doctor_email' => $lecture->doctor->email,
-                'doctor_name' => $lecture->doctor->name,
-                'title' => $lecture->title,
-                'description' => $lecture->description,
-                'specialty' => $lecture->specialty,
-                'years' => $lecture->years,
-                'pdf' => $pdfUrl,
+                'doctor_phone'            => $lecture->doctor->phone,
+                'doctor_email'            => $lecture->doctor->email,
+                'doctor_name'             => $lecture->doctor->name,
+                'title'                   => $lecture->title,
+                'description'             => $lecture->description,
+                'specialty'               => $lecture->specialty,
+                'years'                   => $lecture->years,
+                'pdf'                     => $pdfUrl,
             ],
             'message' => 'Lecture created successfully',
-            'status' => 200,
+            'status'  => 200,
         ]);
     }
+
     /**
      * Update the specified resource in storage.
      */
