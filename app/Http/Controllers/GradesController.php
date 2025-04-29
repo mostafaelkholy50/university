@@ -79,7 +79,7 @@ class GradesController extends Controller
         if (!$termonepayments) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'ادفع رسوم الفصل الدراسي الأول',
+                'message' => ' pay the first semester fees',
             ], 404);
         }
         $subjects = Subjects::where('specialty', $user->specialty)
@@ -108,7 +108,7 @@ class GradesController extends Controller
         if (!$termtwopayments) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'ادفع رسوم الفصل الدراسي الثاني',
+                'message' => 'pay the second semester fees',
             ], 404);
         }
         $subjects = Subjects::where('specialty', $user->specialty)
