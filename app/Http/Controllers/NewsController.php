@@ -17,6 +17,7 @@ class NewsController extends Controller
 
         $data = $news->map(function ($news) {
             return [
+                'id' => $news->id,
                 'title' => $news->title,
                 'content' => $news->content,
                 'date' => $news->date,
@@ -45,39 +46,39 @@ class NewsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title'   => 'required|string',
+            'title' => 'required|string',
             'content' => 'required|string',
-            'date'    => 'required|date',
+            'date' => 'required|date',
             'section' => 'required|string',
-            'image'   => 'nullable|file|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|file|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($request->hasFile('image')) {
-            $imageName = time().'.'.$request->image->extension();
+            $imageName = time() . '.' . $request->image->extension();
             $request->image->move(public_path('storage/News_images/'), $imageName);
         } else {
             $imageName = 'Default.jpg';
         }
 
         $news = News::create([
-            'title'   => $request->title,
+            'title' => $request->title,
             'content' => $request->content,
-            'date'    => $request->date,
+            'date' => $request->date,
             'section' => $request->section,
-            'image'   => $imageName,
+            'image' => $imageName,
         ]);
 
         return response()->json([
             'message' => 'News created successfully.',
-            'news'    => [
-                'id'      => $news->id,
-                'title'   => $news->title,
+            'news' => [
+                'id' => $news->id,
+                'title' => $news->title,
                 'content' => $news->content,
-                'date'    => $news->date,
+                'date' => $news->date,
                 'section' => $news->section,
-                'image'   => asset('storage/News_images/'.$news->image),
+                'image' => asset('storage/News_images/' . $news->image),
             ],
-            'status'  => 201
+            'status' => 201
         ]);
     }
 
