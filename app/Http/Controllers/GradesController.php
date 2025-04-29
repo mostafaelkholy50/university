@@ -98,7 +98,7 @@ class GradesController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'grades' => $subjects,
+            'subjects' => $subjects,
         ], 200);
     }
     public function ShowGradesTwoAuth()
