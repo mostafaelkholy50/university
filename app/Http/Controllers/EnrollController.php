@@ -58,6 +58,34 @@ class EnrollController extends Controller
             'enrollment' => $enroll,
         ], 201);
     }
+    public function storeAdmin(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'course_id' => 'required|exists:courses,id',
+            'payment_status' => 'required|string|in:paid,unpaid',
+        ]);
+        $enroll = enroll::where('user_id', $request->user_id)
+            ->where('course_id', $request->course_id)
+            ->first();
+        if ($enroll) {
+            return response()->json([
+                'message' => 'You are already enrolled in this course.',
+                'status' => 409
+            ]);
+        }
+
+        $enroll = new enroll();
+        $enroll->user_id = $request->user_id;
+        $enroll->course_id = $request->course_id;
+        $enroll->payment_status = $request->payment_status;
+        $enroll->save();
+
+        return response()->json([
+            'message' => 'Enrollment created successfully.',
+            'enrollment' => $enroll,
+        ], 201);
+    }
 
     /**
      * Display the specified resource.

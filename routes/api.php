@@ -139,6 +139,7 @@ Route::middleware('auth:admin-api')->prefix('/admin')->group(function () {
     Route::delete('/term_two_payments/all', [TermTwoPaymentsController::class, 'deleteAll']);
     //-----------------------enroll-----------------------
     Route::get('/enroll', [EnrollController::class, 'index']);
+    Route::post('/enroll', [EnrollController::class, 'storeAdmin']);
     Route::get('/enroll/{enroll}', [EnrollController::class, 'showid']);
     Route::post('/enroll/{enroll}', [EnrollController::class, 'update']);
     Route::delete('/enroll/{enroll}', [EnrollController::class, 'destroy']);
