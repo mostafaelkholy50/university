@@ -31,6 +31,7 @@ class AuthAdminController extends Controller
                 'name' => $Admin->name,
                 'email' => $Admin->email,
             ],
+            'user_type' => 'admin',
             'token' => $token
         ]);
     }
@@ -54,6 +55,7 @@ class AuthAdminController extends Controller
                 'name' => $Admin->name,
                 'email' => $Admin->email,
             ],
+            'user_type' => 'admin',
             'token' => $token
         ]);
     }

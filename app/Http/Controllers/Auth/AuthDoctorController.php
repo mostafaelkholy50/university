@@ -28,7 +28,8 @@ class AuthDoctorController extends Controller
         return response()->json([
             'message' => 'Code sent successfully.',
             'token' => $token,
-            'data' => $Doctor
+            'data' => $Doctor,
+            'user_type' => 'doctor',
         ], 201);
     }
     public function login(Request $request)
@@ -48,7 +49,8 @@ class AuthDoctorController extends Controller
         return response()->json([
             'message' => 'Login successfully.',
             'token' => $token,
-            'Doctor' => $Doctor
+            'Doctor' => $Doctor,
+            'user_type' => 'doctor',
         ], 200);
     }
 }

@@ -26,7 +26,11 @@ class NewsController extends Controller
                 'comments' => $news->commentNews->map(function ($comment) {
                     return [
                         'id' => $comment->id,
-                        'user_id' => $comment->user_id,
+                        'user' => [
+                            'id' => $comment->user_id,
+                            'name' => $comment->user->name,
+                            'image' => asset('storage/user/' . $comment->user->image),
+                        ],
                         'comment' => $comment->comment,
                         'rate' => $comment->rate,
                     ];
@@ -100,7 +104,11 @@ class NewsController extends Controller
                 'comments' => $news->commentNews->map(function ($comment) {
                     return [
                         'id' => $comment->id,
-                        'user_id' => $comment->user_id,
+                        'user' => [
+                            'id' => $comment->user_id,
+                            'name' => $comment->user->name,
+                            'image' => asset('storage/user/' . $comment->user->image),
+                        ],
                         'comment' => $comment->comment,
                         'rate' => $comment->rate,
                     ];
