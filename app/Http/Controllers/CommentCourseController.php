@@ -59,7 +59,18 @@ class CommentCourseController extends Controller
         ]);
         return response()->json([
             'message' => 'Comment created successfully.',
-            'data' => $comment
+            'data' =>[
+                'id' => $comment->id,
+                'course_id' => $comment->course_id,
+                'user' => [
+                    'id' => $comment->user_id,
+                    'name' => $comment->user->name,
+                    'image' => asset('storage/Users_images/' . $comment->user->image),
+                ],
+                'comment' => $comment->comment,
+                'rate' => $comment->rate,
+
+            ]
         ], 201);
     }
 
