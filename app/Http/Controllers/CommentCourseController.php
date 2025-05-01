@@ -28,6 +28,19 @@ class CommentCourseController extends Controller
             'rate' => 'required|integer|min:1|max:5',
         ]);
         $user = auth()->user()->id;
+        $enroll = auth()->user()->enroll()
+            ->where('course_id', $request->course_id)
+            ->first();
+        if (!$enroll) {
+            return response()->json([
+                'message' => 'You must enroll in the course before commenting.',
+            ], 403);
+        }
+        if ($enroll->payment_status == 'unpaid') {
+            return response()->json([
+                'message' => 'You must pay for the course before commenting.',
+            ], 403);
+        }
         $comment = CommentCourse::where('user_id', $user)
             ->where('course_id', $request->course_id)
             ->first();
