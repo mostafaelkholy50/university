@@ -59,9 +59,9 @@ class TermTwoPaymentsController extends Controller
         ], 200);
     }
 
- function destroy(term_two_payments $termOnePayment)
+ function destroy(term_two_payments $term_two_payments)
 {
-    $termOnePayment->delete();
+    $term_two_payments->delete();
     return response()->json([
         'status' => 'success',
         'message' => 'Payment deleted successfully',

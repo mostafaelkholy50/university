@@ -78,6 +78,10 @@ class CommentNewsController extends Controller
      */
     public function destroy(CommentNews $commentNews)
     {
-        //
+        $commentNews->delete();
+        return response()->json([
+            'message' => 'Comment deleted successfully.',
+            'status' => 200
+        ]);
     }
 }

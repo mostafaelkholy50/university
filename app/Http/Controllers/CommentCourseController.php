@@ -104,6 +104,10 @@ class CommentCourseController extends Controller
      */
     public function destroy(CommentCourse $commentCourse)
     {
-        //
+        $commentCourse->delete();
+        return response()->json([
+            'message' => 'Comment deleted successfully.',
+            'status' => 200
+        ]);
     }
 }

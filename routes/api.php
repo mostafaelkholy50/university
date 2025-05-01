@@ -68,6 +68,7 @@ Route::middleware('auth:doctor-api')->prefix('/doctor')->group(function () {
 Route::middleware('auth:api')->prefix('/user')->group(function () {
     Route::get('/', [UserControler::class, 'showAuth']);
     Route::post('/comment', [CommentNewsController::class, 'store']);
+    Route::delete('/comment/{commentNews}', [CommentNewsController::class, 'destroy']);
     Route::post('/', [UserControler::class, 'updateAuth']);
     Route::delete('/', [UserControler::class, 'destroyAuth']);
     Route::get('/schedule', [ScheduleController::class, 'UserSchedule']);
@@ -86,6 +87,7 @@ Route::middleware('auth:api')->prefix('/user')->group(function () {
     Route::get('/lectures/{lecture}', [LectureController::class, 'showID']);
         //-----------------------Comments-----------------------
         Route::post('/courses/comments', [CommentCourseController::class, 'store']);
+        Route::delete('/courses/comments/{commentCourse}', [CommentCourseController::class, 'destroy']);
 });
 //------------------------admin-----------------------
 Route::post('/admin/login', [AuthAdminController::class, 'login']);
@@ -132,10 +134,10 @@ Route::middleware('auth:admin-api')->prefix('/admin')->group(function () {
     Route::delete('/grades/{grades}', [GradesController::class, 'destroy']);
     //-----------------------Term Payments-----------------------
     Route::post('/term_one_payments', [TermOnePaymentsController::class, 'store']);
-    Route::delete('/term_one_payments/{id}', [TermOnePaymentsController::class, 'destroy']);
+    Route::delete('/term_one_payments/{termOnePayment}', [TermOnePaymentsController::class, 'destroy']);
     Route::delete('/term_one_payments/all', [TermOnePaymentsController::class, 'deleteAll']);
     Route::post('/term_two_payments', [TermTwoPaymentsController::class, 'store']);
-    Route::delete('/term_two_payments/{id}', [TermTwoPaymentsController::class, 'destroy']);
+    Route::delete('/term_two_payments/{term_two_payments}', [TermTwoPaymentsController::class, 'destroy']);
     Route::delete('/term_two_payments/all', [TermTwoPaymentsController::class, 'deleteAll']);
     //-----------------------enroll-----------------------
     Route::get('/enroll', [EnrollController::class, 'index']);
