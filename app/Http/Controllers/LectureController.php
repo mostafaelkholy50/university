@@ -16,7 +16,7 @@ class LectureController extends Controller
     public function index()
     {
         $lectures = Lecture::with('doctor')->get();
-        $lectures->map(function ($lecture) {
+     $data =   $lectures->map(function ($lecture) {
             return [
                 'id' => $lecture->id,
                 'doctor_id' => $lecture->doctor_id,
@@ -34,7 +34,7 @@ class LectureController extends Controller
             ];
         });
         return response()->json([
-            'lectures' => $lectures,
+            'lectures' => $data,
             'message' => 'Lectures retrieved successfully',
             'status' => 200,
         ]);
