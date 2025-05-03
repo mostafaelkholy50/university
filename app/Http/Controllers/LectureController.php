@@ -197,6 +197,54 @@ class LectureController extends Controller
             'status'  => 200,
         ]);
     }
+    /**
+     * Store a newly created resource in storage.
+     */
+
+    public function storeAdmin(Request $request)
+    {
+        $data = $request->validate([
+            'doctor_id'   => 'required|exists:doctors,id',
+            'title'       => 'required|string|max:255',
+            'description' => 'required|string|max:1000',
+            'specialty'   => 'required|string|max:255',
+            'years'       => 'required|string|max:255',
+            'pdf'         => 'required|mimes:pdf|max:20480',
+        ]);
+
+        if ($request->hasFile('pdf')) {
+            $pdfName = time() . '.' . $request->pdf->extension();
+            $request->pdf->move(public_path('storage/lectures/'), $pdfName);
+        }
+        $lecture = Lecture::create([
+            'doctor_id'   => $data['doctor_id'],
+            'title'       => $data['title'],
+            'description' => $data['description'],
+            'specialty'   => $data['specialty'],
+            'years'       => $data['years'],
+            'pdf'         => $pdfName,
+        ]);
+
+        return response()->json([
+            'lecture' => [
+                'id'                      => $lecture->id,
+                'doctor_id'               => $lecture->doctor_id,
+                'doctor_image'            => asset('storage/Doctors_images/' . $lecture->doctor->image),
+                'doctor_specialization'   => $lecture->doctor->specialization,
+                'doctor_experience_years' => $lecture->doctor->experience_years,
+                'doctor_phone'            => $lecture->doctor->phone,
+                'doctor_email'            => $lecture->doctor->email,
+                'doctor_name'             => $lecture->doctor->name,
+                'title'                   => $lecture->title,
+                'description'             => $lecture->description,
+                'specialty'               => $lecture->specialty,
+                'years'                   => $lecture->years,
+                'pdf'                     => asset('storage/lectures/' . $lecture->pdf),
+            ],
+            'message' => 'Lecture created successfully',
+            'status'  => 200,
+        ]);
+    }
 
     /**
      * Update the specified resource in storage.

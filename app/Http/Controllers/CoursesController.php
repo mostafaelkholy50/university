@@ -38,6 +38,35 @@ class CoursesController extends Controller
             'status' => 200
         ]);
     }
+    /**
+     * Display a listing of the resource.
+     */
+    public function ShowDoctor()
+    {
+       $courses = courses::where('doctor_id', auth()->user()->id)->get();
+        if (!$courses) {
+            return response()->json([
+                'message' => 'No courses found.',
+                'status' => 404
+            ]);
+        }
+        $data = $courses->map(function ($course) {
+            return [
+                'id' => $course->id,
+                'doctor_id' => $course->doctor_id,
+                'title' => $course->title,
+                'description' => $course->description,
+                'image' => asset('storage/Courses_images/' . $course->image),
+                'category' => $course->category,
+                'date' => $course->date,
+            ];
+        });
+        return response()->json([
+            'message' => 'Courses fetched successfully.',
+            'courses' => $data,
+            'status' => 200
+        ]);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -132,6 +161,43 @@ class CoursesController extends Controller
                 'date' => $courses->date,
             ],
         ], 200);
+    }
+    public function storeAdmin(Request $request)
+    {
+        $request->validate([
+            'doctor_id' => 'required|exists:doctors,id',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'category' => 'required|string|max:255',
+            'date' => 'required|date',
+        ]);
+        $course = new courses();
+        $course->doctor_id = $request->doctor_id;
+        $course->title = $request->title;
+        $course->description = $request->description;
+        if ($request->hasFile('image')) {
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('storage/Courses_images/'), $imageName);
+        }
+        $course->image = $imageName ;
+        $course->category = $request->category;
+        $course->date = $request->date;
+        $course->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Course created successfully',
+            'course' => [
+                'id' => $course->id,
+                'doctor_id' => $course->doctor_id,
+                'title' => $course->title,
+                'description' => $course->description,
+                'image' => asset('storage/Courses_images/' . $imageName),
+                'category' => $course->category,
+                'date' => $course->date,
+            ],
+        ], 201);
     }
 
     /**

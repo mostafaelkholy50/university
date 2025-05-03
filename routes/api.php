@@ -46,6 +46,7 @@ Route::middleware('auth:doctor-api')->prefix('/doctor')->group(function () {
     Route::delete('/', [DoctorController::class, 'destroyAuth']);
     //-----------------------Courses-----------------------
     Route::get('/courses', [CoursesController::class, 'index']);
+    Route::get('/courses/Auth', [CoursesController::class, 'ShowDoctor']);
     Route::get('/courses/{courses}', [CoursesController::class, 'show']);
     Route::post('/courses', [CoursesController::class, 'store']);
     Route::post('/courses/{courses}', [CoursesController::class, 'update']);
@@ -145,6 +146,24 @@ Route::middleware('auth:admin-api')->prefix('/admin')->group(function () {
     Route::get('/enroll/{enroll}', [EnrollController::class, 'showid']);
     Route::post('/enroll/{enroll}', [EnrollController::class, 'update']);
     Route::delete('/enroll/{enroll}', [EnrollController::class, 'destroy']);
+    //-----------------------courses-----------------------
+    Route::get('/courses', [CoursesController::class, 'index']);
+    Route::get('/courses/{courses}', [CoursesController::class, 'show']);
+    Route::post('/courses', [CoursesController::class, 'storeAdmin']);
+    Route::post('/courses/{courses}', [CoursesController::class, 'update']);
+    Route::delete('/courses/{courses}', [CoursesController::class, 'destroy']);
+    //-----------------------lectures-----------------------
+    Route::get('/lectures', [LectureController::class, 'index']);
+    Route::get('/lectures/{lecture}', [LectureController::class, 'showID']);
+    Route::post('/lectures', [LectureController::class, 'storeAdmin']);
+    Route::post('/lectures/{lecture}', [LectureController::class, 'update']);
+    Route::delete('/lectures/{lecture}', [LectureController::class, 'destroy']);
+    //-----------------------episodes-----------------------
+    Route::get('/episodes', [EpisodesController::class, 'index']);
+    Route::get('/episodes/{episodes}', [EpisodesController::class, 'showID']);
+    Route::post('/episodes', [EpisodesController::class, 'store']);
+    Route::post('/episodes/{episodes}', [EpisodesController::class, 'update']);
+    Route::delete('/episodes/{episodes}', [EpisodesController::class, 'destroy']);
 
 });
 
