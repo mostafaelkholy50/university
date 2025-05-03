@@ -37,11 +37,9 @@ class GradesController extends Controller
             'user_id' => 'required|exists:users,id',
             'subject_id' => 'required|exists:subjects,id',
             'grade' => 'required|String|max:255',
-            'term' => 'required|string|max:255',
         ]);
         $subject = grades::where('user_id', $request->user_id)
             ->where('subject_id', $request->subject_id)
-            ->where('term', $request->term)
             ->first();
         if ($subject) {
             return response()->json([
@@ -53,7 +51,6 @@ class GradesController extends Controller
         $grade->user_id = $request->user_id;
         $grade->subject_id = $request->subject_id;
         $grade->grade = $request->grade;
-        $grade->term = $request->term;
         $grade->save();
         return response()->json([
             'status' => 'success',
@@ -86,7 +83,7 @@ class GradesController extends Controller
         ->where('years', $user->years)
         ->where('term', 1)
         ->with(['grades' => function ($query) use ($user) {
-            $query->where('user_id', $user->id)->where('term', 1);
+            $query->where('user_id', $user->id);
         }])
         ->get();
         if ($subjects->isEmpty()) {
@@ -115,7 +112,7 @@ class GradesController extends Controller
         ->where('years', $user->years)
         ->where('term', 2)
         ->with(['grades' => function ($query) use ($user) {
-            $query->where('user_id', $user->id)->where('term', 2);
+            $query->where('user_id', $user->id);
         }])
         ->get();
         if ($subjects->isEmpty()) {
@@ -140,11 +137,9 @@ class GradesController extends Controller
             'user_id' => 'required|exists:users,id',
             'subject_id' => 'required|exists:subjects,id',
             'grade' => 'required|String|max:255',
-            'term' => 'required|string|max:255',
         ]);
         $subject = grades::where('user_id', $request->user_id)
             ->where('subject_id', $request->subject_id)
-            ->where('term', $request->term)
             ->first();
         if (!$subject) {
             return response()->json([
@@ -155,7 +150,6 @@ class GradesController extends Controller
         $subject->user_id = $request->user_id;
         $subject->subject_id = $request->subject_id;
         $subject->grade = $request->grade;
-        $subject->term = $request->term;
         $subject->save();
         return response()->json([
             'status' => 'success',

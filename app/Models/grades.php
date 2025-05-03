@@ -14,7 +14,6 @@ class grades extends Model
         'user_id',
         'subject_id',
         'grade',
-        'term',
     ];
     public function user()
     {

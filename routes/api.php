@@ -148,7 +148,7 @@ Route::middleware('auth:admin-api')->prefix('/admin')->group(function () {
     Route::delete('/enroll/{enroll}', [EnrollController::class, 'destroy']);
     //-----------------------courses-----------------------
     Route::get('/courses', [CoursesController::class, 'index']);
-    Route::get('/courses/{courses}', [CoursesController::class, 'show']);
+    Route::get('/courses/{courses}', [CoursesController::class, 'showAdmin']);
     Route::post('/courses', [CoursesController::class, 'storeAdmin']);
     Route::post('/courses/{courses}', [CoursesController::class, 'update']);
     Route::delete('/courses/{courses}', [CoursesController::class, 'destroy']);

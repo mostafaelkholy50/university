@@ -264,6 +264,71 @@ class CoursesController extends Controller
             'status'   => 200
         ], 200);
     }
+    /**
+     * Display the specified resource.
+     */
+    public function showAdmin(Courses $courses)
+    {
+        // Load relationships to avoid N+1
+        $courses->load(['episodes', 'comments.user', 'doctor']);
+
+        if ($courses->episodes->isEmpty()) {
+            return response()->json([
+                'message' => 'No episodes found for this course.',
+                'status' => 404
+            ], 404);
+        }
+
+        $episodesData = $courses->episodes->map(function ($ep) {
+            return [
+                'id'          => $ep->id,
+                'course_id'   => $ep->course_id,
+                'title'       => $ep->title,
+                'description' => $ep->description,
+                'Video'       => url('storage/' . $ep->Video),
+            ];
+        });
+
+
+        $commentsData = $courses->comments->map(function ($comment) {
+            return [
+                'id'      => $comment->id,
+                'course_id' => $comment->course_id,
+                'user'    => [
+                    'id'    => $comment->user->id,
+                    'name'  => $comment->user->name,
+                    'image' => asset('storage/user/' . $comment->user->image),
+                ],
+                'comment' => $comment->comment,
+                'rate'    => $comment->rate,
+            ];
+        });
+
+        $doctor = $courses->doctor;
+
+        return response()->json([
+            'message' => 'Course fetched successfully.',
+            'course'  => [
+                'id'           => $courses->id,
+                'doctor'       => [
+                    'id'             => $doctor->id,
+                    'name'           => $doctor->name,
+                    'email'          => $doctor->email,
+                    'image'          => asset('storage/Doctors_images/' . $doctor->image),
+                    'specialization' => $doctor->specialization,
+                    'phone'          => $doctor->phone,
+                ],
+                'title'        => $courses->title,
+                'description'  => $courses->description,
+                'image'        => asset('storage/Courses_images/' . $courses->image),
+                'category'     => $courses->category,
+                'date'         => $courses->date,
+                'episodes'     => $episodesData,
+            ],
+            'comments' => $commentsData,
+            'status'   => 200
+        ], 200);
+    }
 
 
     /**
