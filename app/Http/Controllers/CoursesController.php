@@ -208,13 +208,6 @@ class CoursesController extends Controller
         // Load relationships to avoid N+1
         $courses->load(['episodes', 'comments.user', 'doctor']);
 
-        if ($courses->episodes->isEmpty()) {
-            return response()->json([
-                'message' => 'No episodes found for this course.',
-                'status' => 404
-            ], 404);
-        }
-
         $episodesData = $courses->episodes->map(function ($ep) {
             return [
                 'id'          => $ep->id,
@@ -271,13 +264,6 @@ class CoursesController extends Controller
     {
         // Load relationships to avoid N+1
         $courses->load(['episodes', 'comments.user', 'doctor']);
-
-        if ($courses->episodes->isEmpty()) {
-            return response()->json([
-                'message' => 'No episodes found for this course.',
-                'status' => 404
-            ], 404);
-        }
 
         $episodesData = $courses->episodes->map(function ($ep) {
             return [
