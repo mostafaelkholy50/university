@@ -19,6 +19,9 @@ return new class extends Migration
             $table->date('date');
             $table->time('start_time');
             $table->time('end_time');
+            $table->string('year');
+            $table->string('specialty');
+            $table->string('term');
             $table->timestamps();
         });
     }

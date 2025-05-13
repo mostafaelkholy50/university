@@ -16,6 +16,9 @@ class exam extends Model
         'date',
         'start_time',
         'end_time',
+        'year',
+        'specialty',
+        'term',
     ];
     public function doctor()
     {

@@ -96,6 +96,9 @@ Route::middleware('auth:api')->prefix('/user')->group(function () {
         //-----------------------Comments-----------------------
         Route::post('/courses/comments', [CommentCourseController::class, 'store']);
         Route::delete('/courses/comments/{commentCourse}', [CommentCourseController::class, 'destroy']);
+        //-----------------------Exam-----------------------
+        Route::get('/exams', [ExamController::class, 'indexUser']);
+        Route::get('/exams/{exam}', [ExamController::class, 'show']);
 });
 //------------------------admin-----------------------
 Route::post('/admin/login', [AuthAdminController::class, 'login']);
