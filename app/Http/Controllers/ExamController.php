@@ -53,7 +53,7 @@ public function index()
          $data = $exams->map(function ($exam) {
             return [
                 'doctor_id' => $exam->doctor_id,
-                'doctor_image' => asset('storage/Doctors_images/') . $exam->doctor->image,
+                'doctor_image' => asset('storage/Doctors_images/') .'/'. $exam->doctor->image,
                 'doctor_name' => $exam->doctor->name,
                 'name' => $exam->name,
                 'link' => $exam->link,
@@ -132,7 +132,7 @@ public function index()
             'message' => 'Exam retrieved successfully.',
             'data' =>[
                 'doctor_id' => $exam->doctor_id,
-                'doctor_image' => asset('storage/Doctors_images/') . $exam->doctor->image,
+                'doctor_image' => asset('storage/Doctors_images/') .'/'. $exam->doctor->image,
                 'doctor_name' => $exam->doctor->name,
                 'name' => $exam->name,
                 'link' => $exam->link,
