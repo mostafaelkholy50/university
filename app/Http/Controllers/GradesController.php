@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\grades;
 use App\Models\subjects;
+use Illuminate\Container\Attributes\Storage;
 use Illuminate\Http\Request;
 use App\Models\term_one_payments;
 use App\Models\term_two_payments;
@@ -19,9 +20,15 @@ class GradesController extends Controller
     {
         $grades = grades::all();
         $grades->map(function ($grade) {
-            $grade->user_id = ['id' => $grade->user->id,'image' => asset('storage/user/' . $grade->user->image) ,'name' => $grade->user->name];
-            $grade->subject_id = ['id' => $grade->subject->id, 'name' => $grade->subject->name];
-            return $grade;
+           return[
+                'user' => [
+                    'id' => $grade->user->id,
+                    'image' => asset('storage/user/') . $grade->user->image,
+                    'name' => $grade->user->name,
+                ],
+                'subject' => $grade->subject->name,
+                'grade' => $grade->grade,
+            ];
         });
         return response()->json([
             'status' => 'success',
