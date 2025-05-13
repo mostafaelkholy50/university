@@ -127,8 +127,10 @@ public function index()
      */
     public function show(exam $exam)
     {
-       $data= $exam->map(function ($exam) {
-            return [
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Exam retrieved successfully.',
+            'data' =>[
                 'doctor_id' => $exam->doctor_id,
                 'doctor_image' => asset('storage/Doctors_images/') . $exam->doctor->image,
                 'doctor_name' => $exam->doctor->name,
@@ -137,14 +139,7 @@ public function index()
                 'date' => $exam->date,
                 'start_time' => $exam->start_time,
                 'end_time' => $exam->end_time,
-            ];
-        });
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Exam retrieved successfully.',
-            'data' => [
-                'exam' => $data,
-            ]
+            ],
         ], 200);
     }
 
