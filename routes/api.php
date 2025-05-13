@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserControler;
+use App\Http\Controllers\ExamController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\EnrollController;
@@ -63,6 +64,12 @@ Route::middleware('auth:doctor-api')->prefix('/doctor')->group(function () {
     Route::post('/lectures', [LectureController::class, 'store']);
     Route::post('/lectures/{lecture}', [LectureController::class, 'update']);
     Route::delete('/lectures/{lecture}', [LectureController::class, 'destroy']);
+    //-----------------------Exam-----------------------
+    Route::get('/exams', [ExamController::class, 'indexDoctor']);
+    Route::get('/exams/{exam}', [ExamController::class, 'show']);
+    Route::post('/exams', [ExamController::class, 'storeDoctor']);
+    Route::post('/exams/{exam}', [ExamController::class, 'update']);
+    Route::delete('/exams/{exam}', [ExamController::class, 'destroy']);
 });
 //-------------------------User-------------------------
 
@@ -165,6 +172,11 @@ Route::middleware('auth:admin-api')->prefix('/admin')->group(function () {
     Route::post('/episodes', [EpisodesController::class, 'store']);
     Route::post('/episodes/{episodes}', [EpisodesController::class, 'update']);
     Route::delete('/episodes/{episodes}', [EpisodesController::class, 'destroy']);
-
+    //-----------------------Exam-----------------------
+    Route::get('/exams', [ExamController::class, 'index']);
+    Route::get('/exams/{exam}', [ExamController::class, 'show']);
+    Route::post('/exams', [ExamController::class, 'store']);
+    Route::post('/exams/{exam}', [ExamController::class, 'update']);
+    Route::delete('/exams/{exam}', [ExamController::class, 'destroy']);
 });
 
