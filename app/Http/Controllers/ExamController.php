@@ -56,7 +56,7 @@ class ExamController extends Controller
     public function indexUser()
     {
         $user = auth()->user();
-        $exams = exam::where('year', $user->year)
+        $exams = exam::where('year', $user->years)
         ->where('specialty', $user->specialty)->get();
         if ($exams->isEmpty()) {
             return response()->json([
