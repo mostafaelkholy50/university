@@ -19,7 +19,7 @@ class GradesController extends Controller
     public function index()
     {
         $grades = grades::all();
-        $grades->map(function ($grade) {
+       $data= $grades->map(function ($grade) {
            return[
                 'user' => [
                     'id' => $grade->user->id,
@@ -32,7 +32,7 @@ class GradesController extends Controller
         });
         return response()->json([
             'status' => 'success',
-            'grades' => $grades,
+            'grades' => $data,
         ], 200);
     }
 
