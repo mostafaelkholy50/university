@@ -129,6 +129,7 @@ Route::middleware('auth:admin-api')->prefix('/admin')->group(function () {
     Route::post('/subjects/{subjects}', [SubjectsController::class, 'update']);
     Route::delete('/subjects/{subjects}', [SubjectsController::class, 'destroy']);
     //-----------------------Grades-----------------------
+    Route::get('/grades', [GradesController::class, 'index']);
     Route::post('/grades', [GradesController::class, 'store']);
     Route::get('/grades/{grades}', [GradesController::class, 'show']);
     Route::post('/grades/{grades}', [GradesController::class, 'update']);
@@ -147,7 +148,7 @@ Route::middleware('auth:admin-api')->prefix('/admin')->group(function () {
     Route::post('/enroll/{enroll}', [EnrollController::class, 'update']);
     Route::delete('/enroll/{enroll}', [EnrollController::class, 'destroy']);
     //-----------------------courses-----------------------
-    Route::get('/courses', [CoursesController::class, 'index']);
+    Route::get('/courses', [CoursesController::class, 'indexAdmin']);
     Route::get('/courses/{courses}', [CoursesController::class, 'showAdmin']);
     Route::post('/courses', [CoursesController::class, 'storeAdmin']);
     Route::post('/courses/{courses}', [CoursesController::class, 'update']);

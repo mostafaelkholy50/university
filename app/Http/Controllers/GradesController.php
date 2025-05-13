@@ -17,7 +17,16 @@ class GradesController extends Controller
      */
     public function index()
     {
-
+        $grades = grades::with(['user', 'subject'])->get();
+        $grades->map(function ($grade) {
+            $grade->user_id = ['id' => $grade->user->id,'image' => asset('storage/user/' . $grade->user->image) ,'name' => $grade->user->name];
+            $grade->subject_id = ['id' => $grade->subject->id, 'name' => $grade->subject->name];
+            return $grade;
+        });
+        return response()->json([
+            'status' => 'success',
+            'grades' => $grades,
+        ], 200);
     }
 
     /**

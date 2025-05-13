@@ -38,6 +38,41 @@ class CoursesController extends Controller
             'status' => 200
         ]);
     }
+    public function indexAdmin()
+    {
+       $courses = courses::all();
+        if (!$courses) {
+            return response()->json([
+                'message' => 'No courses found.',
+                'status' => 404
+            ]);
+        }
+        $data = $courses->map(function ($course) {
+            return [
+                'id' => $course->id,
+                'doctor_id' => $course->doctor_id,
+                'title' => $course->title,
+                'description' => $course->description,
+                'image' => asset('storage/Courses_images/' . $course->image),
+                'category' => $course->category,
+                'date' => $course->date,
+                'episodes' => $course->episodes->map(function ($ep) {
+                    return [
+                        'id'          => $ep->id,
+                        'course_id'   => $ep->course_id,
+                        'title'       => $ep->title,
+                        'description' => $ep->description,
+                        'Video'       => url('storage/' . $ep->Video),
+                    ];
+                }),
+            ];
+        });
+        return response()->json([
+            'message' => 'Courses fetched successfully.',
+            'courses' => $data,
+            'status' => 200
+        ]);
+    }
     /**
      * Display a listing of the resource.
      */
