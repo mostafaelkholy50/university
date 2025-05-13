@@ -6,35 +6,46 @@ use App\Models\exam;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreexamRequest;
 use App\Http\Requests\UpdateexamRequest;
+use Carbon\Carbon;
 
 class ExamController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $exams = exam::all();
-        $data = $exams->map(function ($exam) {
-            return [
-                'doctor_id' => $exam->doctor_id,
-                'doctor_image' => asset('storage/Doctors_images/') . $exam->doctor->image,
-                'doctor_name' => $exam->doctor->name,
-                'name' => $exam->name,
-                'link' => $exam->link,
-                'date' => $exam->date,
-                'start_time' => $exam->start_time,
-                'end_time' => $exam->end_time,
-            ];
-        });
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Exams retrieved successfully.',
-            'data' => [
-                'exams' => $data,
-            ]
-        ], 200);
-    }
+
+public function index()
+{
+    $exams = exam::all();
+
+    $data = $exams->map(function ($exam) {
+        $start = Carbon::parse("{$exam->date} {$exam->start_time}");
+        $end   = Carbon::parse("{$exam->date} {$exam->end_time}");
+
+        $availability = Carbon::now()->gt($end) ? 'not available' : 'available';
+
+        return [
+            'doctor_id'      => $exam->doctor_id,
+            'doctor_image'   => asset("storage/Doctors_images/{$exam->doctor->image}"),
+            'doctor_name'    => $exam->doctor->name,
+            'name'           => $exam->name,
+            'link'           => $exam->link,
+            'date'           => $exam->date,
+            'start_time'     => $exam->start_time,
+            'end_time'       => $exam->end_time,
+            'availability'   => $availability,
+        ];
+    });
+
+    return response()->json([
+        'status'  => 'success',
+        'message' => 'Exams retrieved successfully.',
+        'data'    => [
+            'exams' => $data,
+        ]
+    ], 200);
+}
+
     public function indexDoctor()
     {
         $doctor_id = auth()->user()->id;
