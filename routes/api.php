@@ -22,6 +22,7 @@ use App\Http\Controllers\Auth\AuthDoctorController;
 use App\Http\Controllers\TermOnePaymentsController;
 use App\Http\Controllers\TermTwoPaymentsController;
 
+Route::middleware('throttle:10,1')->group(function () {
 Route::post('/register', [AuthControler::class, 'register']);
 Route::post('/verify-code', [AuthControler::class, 'verifyCode']);
 Route::post('/resend-code', [AuthControler::class, 'sendcode']);
@@ -183,3 +184,4 @@ Route::middleware('auth:admin-api')->prefix('/admin')->group(function () {
     Route::delete('/exams/{exam}', [ExamController::class, 'destroy']);
 });
 
+});
