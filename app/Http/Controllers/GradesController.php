@@ -20,8 +20,8 @@ class GradesController extends Controller
 {
     // eager load العلاقات اللي هنحتاجها
     $grades = grades::with([
-        'user.term_one_payments',
-        'user.term_two_payments',
+        'user.termOnePayments',
+        'user.termTwoPayments',
         'subject'
     ])->get();
 
@@ -35,8 +35,8 @@ class GradesController extends Controller
             ],
             'subject' => $grade->subject->name,
             'grade'   => $grade->grade,
-            'term_one_payment' => $user->term_one_payments->isEmpty() ? 'not paid' : 'paid',
-            'term_two_payment' => $user->term_two_payments->isEmpty() ? 'not paid' : 'paid',
+            'term_one_payment' => $user->termOnePayments->isEmpty() ? 'not paid' : 'paid',
+            'term_two_payment' => $user->termTwoPayments->isEmpty() ? 'not paid' : 'paid',
         ];
     });
 
