@@ -10,7 +10,7 @@ class ChatAiController extends Controller
     public function ask(Request $request)
     {
          $response = Http::withHeaders([
-            'Authorization'   => 'Bearer ' . env('OPENROUTER_API_KEY'),
+            'Authorization'   => 'Bearer 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',
             'X-Title'         => config('app.name'),        // اختياري
         ])->post('https://openrouter.ai/api/v1', [
             'model'    => 'deepseek/deepseek-r1:free',
