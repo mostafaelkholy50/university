@@ -6,19 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class ChatAiController extends Controller
+{public function ask(Request $request)
 {
-    public function ask(Request $request)
-    {
-        // Validate the incoming question
-        $request->validate([
-            'question' => 'required|string',
-        ]);
+    $request->validate(['question' => 'required|string']);
 
-        $apiKey   = env('OPENROUTER_API_KEY');
-        $question = $request->input('question');
+    $apiKey   = env('OPENROUTER_API_KEY');
+    $question = $request->input('question');
 
-        // هنا تحط المحتوى اللي انت عايزه ثابت
-        $context = <<<'CTX'
+    // حطي الـ context ثابت هنا أو حتجيبيه من config/file
+    $context = <<<'CTX'
 المعهد التكنولجي العالي النشأة والاعتماد
 أُنشئ المعهد بموجب القرار الوزاري رقم 1964 لسنة 2020، ويُعد أول معهد عالي تكنولوجي خاص في مصر. هو معتمد من وزارة التعليم العالي والمجلس الأعلى للجامعات، ومدرج ضمن تنسيق مجموع القبول للجامعات والمعاهد
 High Tech Institute
@@ -70,43 +66,34 @@ High Tech Institute
 
 العنوان: الكيلو 2 طريق بني سويف – القاهرة الزراعي (بجوار بوابة بني سويف مباشرة)
 
-هاتف: 01029337792 – 01200249762
+هاتف: 01029337792 – 01200249762 
 CTX;
 
-        // نبني الميسدجز للـ API
-        $messages = [
-            [
-                'role'    => 'system',
-                'content' => "انت مساعد ذكي، جاوب على الأسئلة بناءً على المعلومات دي فقط:\n"
-                             . $context,
-            ],
-            [
-                'role'    => 'user',
-                'content' => $question,
-            ],
-        ];
+    $messages = [
+        ['role'=>'system','content'=>"انت مساعد ذكي، جاوب بناءً على المعلومات دي:\n{$context}"],
+        ['role'=>'user'  ,'content'=>$question],
+    ];
 
-        // نرسل الطلب لـ OpenRouter
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $apiKey,
-            'Content-Type'  => 'application/json',
-        ])->post('https://openrouter.ai/api/v1/chat/completions', [
-            'model'    => 'nousresearch/deephermes-3-mistral-24b-preview:free',
-            'messages' => $messages,
-        ]);
+    $response = Http::withHeaders([
+        'Authorization'=>'Bearer '.$apiKey,
+        'Accept'       =>'application/json',
+    ])->post('https://openrouter.ai/api/v1/chat/completions', [
+        'model'   => 'nousresearch/deephermes-3-mistral-24b-preview:free',
+        'stream'  => false,
+        'messages'=> $messages,
+    ]);
 
-        // نرجّع النتيجة
-        if ($response->successful()) {
-            return response()->json([
-                'answer' => $response
-                    ->json()['choices'][0]['message']['content']
-                    ?? 'No answer found.',
-            ]);
-        }
-
+    if (! $response->successful()) {
         return response()->json([
-            'error'   => 'Failed to get response from OpenRouter.',
+            'error'   => 'OpenRouter error',
             'details' => $response->body(),
         ], 500);
     }
+
+    $body   = $response->json();
+    $answer = $body['choices'][0]['message']['content'] ?? 'No answer found.';
+
+    return response()->json(['answer'=>$answer]);
+}
+
 }
