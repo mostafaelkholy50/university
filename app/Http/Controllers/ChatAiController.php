@@ -42,7 +42,7 @@ class ChatAiController extends Controller
 - الهاتف: 01029337792 - 01200249762.";
 
         // 3. استخدام الـ API الخاص بالنموذج اللغوي
-        $apiKey = 'AIzaSyDNQzhZXDGeZCvHT7aldDyeoj_pGmw9DXw '; // استبدل ده بالمفتاح بتاعك
+        $apiKey = 'AIzaSyDNQzhZXDGeZCvHT7aldDyeoj_pGmw9DXw'; // استبدل ده بالمفتاح بتاعك
         $apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
         try {
             $response = Http::withHeaders([
