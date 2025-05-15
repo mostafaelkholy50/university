@@ -18,8 +18,12 @@ class ChatAiController extends Controller
     'model' => 'deepseek/deepseek-r1:free',
     'messages' => [
         [
-            'role' => 'user',
+            'role' => 'system',
             'content' => 'What is the meaning of life?'
+        ],
+        [
+            'role' => 'user',
+            'content' => $request->input('question')
         ]
     ]
 ]);
