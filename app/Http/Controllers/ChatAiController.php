@@ -31,7 +31,8 @@ class ChatAiController extends Controller
 
 return response()->json([
     'status' => 'success',
-    'result' => $result,
+    'result' => $result->json(),
 ], 200);
-}
+
+    }
 }
