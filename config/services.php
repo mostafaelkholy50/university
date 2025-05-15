@@ -13,7 +13,10 @@ return [
     | a conventional file to locate the various service credentials.
     |
     */
-
+'openrouter' => [
+    'api_key' => env('OPENROUTER_API_KEY'),
+    'model'   => 'nousresearch/deephermes-3-mistral-24b-preview:free',
+],
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],
