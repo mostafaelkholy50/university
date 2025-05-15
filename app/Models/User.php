@@ -77,4 +77,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(enroll::class);
     }
+    public function termOnePayments()
+    {
+        return $this->hasMany(term_one_payments::class);
+    }
+    public function termTwoPayments()
+    {
+        return $this->hasMany(term_two_payments::class);
+    }
 }

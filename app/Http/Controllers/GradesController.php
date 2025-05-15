@@ -16,25 +16,36 @@ class GradesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $grades = grades::all();
-       $data= $grades->map(function ($grade) {
-           return[
-                'user' => [
-                    'id' => $grade->user->id,
-                    'image' => asset('storage/user/') . $grade->user->image,
-                    'name' => $grade->user->name,
-                ],
-                'subject' => $grade->subject->name,
-                'grade' => $grade->grade,
-            ];
-        });
-        return response()->json([
-            'status' => 'success',
-            'grades' => $data,
-        ], 200);
-    }
+   public function index()
+{
+    // eager load العلاقات اللي هنحتاجها
+    $grades = grades::with([
+        'user.term_one_payments',
+        'user.term_two_payments',
+        'subject'
+    ])->get();
+
+    $data = $grades->map(function ($grade) {
+        $user = $grade->user;
+        return [
+            'user' => [
+                'id'    => $user->id,
+                'image' => asset('storage/user/' . $user->image),
+                'name'  => $user->name,
+            ],
+            'subject' => $grade->subject->name,
+            'grade'   => $grade->grade,
+            'term_one_payment' => $user->term_one_payments->isEmpty() ? 'not paid' : 'paid',
+            'term_two_payment' => $user->term_two_payments->isEmpty() ? 'not paid' : 'paid',
+        ];
+    });
+
+    return response()->json([
+        'status' => 'success',
+        'grades' => $data,
+    ], 200);
+}
+
 
     /**
      * Show the form for creating a new resource.

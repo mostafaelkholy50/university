@@ -40,8 +40,7 @@ Route::get('/courses/{courses}', [CoursesController::class, 'show']);
 //-----------------------lectures-----------------------
 Route::get('/lectures', [LectureController::class, 'index']);
 Route::get('/lectures/{lectures}', [LectureController::class, 'showID']);
-//-----------------------Ask-----------------------
-Route::post('/ask', [ChatAiController::class, 'ask']);
+
 //-----------------------Doctor-----------------------
 Route::post('/doctor/register', [AuthDoctorController::class, 'register']);
 Route::post('/doctor/login', [AuthDoctorController::class, 'login']);
