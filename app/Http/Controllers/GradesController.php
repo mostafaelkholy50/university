@@ -28,6 +28,7 @@ class GradesController extends Controller
     $data = $grades->map(function ($grade) {
         $user = $grade->user;
         return [
+            'id'      => $grade->id,
             'user' => [
                 'id'    => $user->id,
                 'image' => asset('storage/user/' . $user->image),
