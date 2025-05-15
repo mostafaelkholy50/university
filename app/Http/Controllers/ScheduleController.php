@@ -15,7 +15,7 @@ class ScheduleController extends Controller
     public function index()
     {
         $schedules = schedule::all();
-        if (!$schedules) {
+        if ($schedules->isEmpty()) {
             return response()->json([
                 'message' => 'Schedules not found.',
                 'status' => 404
