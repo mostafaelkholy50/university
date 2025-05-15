@@ -9,7 +9,7 @@ class ChatAiController extends Controller
 {
     public function ask(Request $request)
     {
-       $response = Http::withHeaders([
+       $result = Http::withHeaders([
     'Authorization' => 'Bearer ' . env('OPENROUTER_API_KEY'),
     'HTTP-Referer' => 'https://university-hti-project.vercel.app/', // اختياري
     'X-Title' => 'University AI Assistant', // اختياري
@@ -28,7 +28,10 @@ class ChatAiController extends Controller
     ]
 ]);
 
-// الحصول على النتيجة
-$result = $response->json();
+
+return response()->json([
+    'status' => 'success',
+    'result' => $result,
+], 200);
 }
 }
