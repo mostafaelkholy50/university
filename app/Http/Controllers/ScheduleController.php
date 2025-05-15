@@ -14,27 +14,33 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        $schedules = schedule::all();
-        if ($schedules->isEmpty()) {
-            return response()->json([
-                'message' => 'Schedules not found.',
-                'status' => 404
-            ]);
-        }
-        $schedules = $schedules->map(function ($schedule) {
-            return [
-                'id' => $schedule->id,
-                'image' => asset('storage/schedule/' . $schedule->image),
-                'specialty' => $schedule->specialty,
-                'years' => $schedule->years
-            ];
-        });
+        $schedules = Schedule::all();
+
+    if ($schedules->isEmpty()) {
         return response()->json([
-            'message' => 'Schedules fetched successfully.',
-            'schedules' => $schedules,
-            'status' => 200
-        ]);
+            'message' => 'Schedules not found.',
+            'status'  => 404,
+        ], 404);
     }
+
+    // ممكن تستخدم transform بدل map لو عايز تغير الكولكشن نفسه
+    $data = $schedules->map(function ($schedule) {
+        return [
+            'id'        => $schedule->id,
+            'image'     => $schedule->image
+                              ? asset('storage/schedule/' . $schedule->image)
+                              : null,
+            'specialty' => $schedule->specialty,
+            'years'     => $schedule->years,
+        ];
+    });
+
+    return response()->json([
+        'message'   => 'Schedules fetched successfully.',
+        'schedules' => $data,
+        'status'    => 200,
+    ], 200);
+}
     /**
      * Store a newly created resource in storage.
      */
