@@ -52,7 +52,15 @@ class TermOnePaymentsController extends Controller
 
 
 
-    public function destroy(term_one_payments $termOnePayment)
+    public function destroy($id)
+    {
+        $termOnePayment = term_one_payments::where('user_id', $id)->first();
+        if (!$termOnePayment) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Payment not found',
+            ], 404);
+        }
     {
         $termOnePayment->delete();
         return response()->json([
@@ -61,7 +69,7 @@ class TermOnePaymentsController extends Controller
         ], 200);
     }
 
-
+    }
     public function deleteAll()
     {
         term_one_payments::query()->delete();

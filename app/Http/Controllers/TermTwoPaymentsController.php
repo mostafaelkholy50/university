@@ -59,8 +59,15 @@ class TermTwoPaymentsController extends Controller
         ], 200);
     }
 
- function destroy(term_two_payments $term_two_payments)
+ function destroy($id)
 {
+    $term_two_payments = term_two_payments::where('user_id', $id)->first();
+    if (!$term_two_payments) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Payment not found',
+        ], 404);
+    }
     $term_two_payments->delete();
     return response()->json([
         'status' => 'success',

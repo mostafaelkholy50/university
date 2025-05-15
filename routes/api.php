@@ -150,10 +150,10 @@ Route::middleware('auth:admin-api')->prefix('/admin')->group(function () {
     //-----------------------Term Payments-----------------------
     Route::post('/term_one_payments', [TermOnePaymentsController::class, 'store']);
     Route::delete('/term_one_payments/all', [TermOnePaymentsController::class, 'deleteAll']);
-    Route::delete('/term_one_payments/{termOnePayment}', [TermOnePaymentsController::class, 'destroy']);
+    Route::delete('/term_one_payments/{id}', [TermOnePaymentsController::class, 'destroy']);
     Route::post('/term_two_payments', [TermTwoPaymentsController::class, 'store']);
     Route::delete('/term_two_payments/all', [TermTwoPaymentsController::class, 'deleteAll']);
-    Route::delete('/term_two_payments/{term_two_payments}', [TermTwoPaymentsController::class, 'destroy']);
+    Route::delete('/term_two_payments/{id}', [TermTwoPaymentsController::class, 'destroy']);
     //-----------------------enroll-----------------------
     Route::get('/enroll', [EnrollController::class, 'index']);
     Route::post('/enroll', [EnrollController::class, 'storeAdmin']);
