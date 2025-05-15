@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserControler;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\ChatAiController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\EnrollController;
 use App\Http\Controllers\GradesController;
@@ -39,6 +40,8 @@ Route::get('/courses/{courses}', [CoursesController::class, 'show']);
 //-----------------------lectures-----------------------
 Route::get('/lectures', [LectureController::class, 'index']);
 Route::get('/lectures/{lectures}', [LectureController::class, 'showID']);
+//-----------------------Ask-----------------------
+Route::post('/ask', [ChatAiController::class, 'ask']);
 //-----------------------Doctor-----------------------
 Route::post('/doctor/register', [AuthDoctorController::class, 'register']);
 Route::post('/doctor/login', [AuthDoctorController::class, 'login']);
