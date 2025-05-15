@@ -12,7 +12,7 @@ class ChatAiController extends Controller
          $response = Http::withHeaders([
             'Authorization'   => 'Bearer ' . env('OPENROUTER_API_KEY'),
             'X-Title'         => config('app.name'),        // اختياري
-        ])->post('https://openrouter.ai/api/v1/chat/completions', [
+        ])->post('https://openrouter.ai/api/v1', [
             'model'    => 'deepseek/deepseek-r1:free',
             'messages' => [
                 [
