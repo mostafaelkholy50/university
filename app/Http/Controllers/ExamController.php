@@ -30,6 +30,7 @@ class ExamController extends Controller
             $availability = Carbon::now()->gt($end) ? 'not available' : 'available';
 
             return [
+                'id' => $exam->id,
                 'doctor_id' => $exam->doctor_id,
                 'doctor_image' => asset("storage/Doctors_images/{$exam->doctor->image}"),
                 'doctor_name' => $exam->doctor->name,
@@ -72,6 +73,7 @@ class ExamController extends Controller
             $availability = Carbon::now()->gt($end) ? 'not available' : 'available';
 
             return [
+                'id' => $exam->id,
                 'doctor_id' => $exam->doctor_id,
                 'doctor_image' => asset("storage/Doctors_images/{$exam->doctor->image}"),
                 'doctor_name' => $exam->doctor->name,
@@ -102,6 +104,7 @@ class ExamController extends Controller
         $exams = exam::where('doctor_id', $doctor_id)->get();
         $data = $exams->map(function ($exam) {
             return [
+                'id' => $exam->id,
                 'doctor_id' => $exam->doctor_id,
                 'doctor_image' => asset('storage/Doctors_images/') . '/' . $exam->doctor->image,
                 'doctor_name' => $exam->doctor->name,
@@ -190,6 +193,7 @@ class ExamController extends Controller
             'status' => 'success',
             'message' => 'Exam retrieved successfully.',
             'data' => [
+                'id' => $exam->id,
                 'doctor_id' => $exam->doctor_id,
                 'doctor_image' => asset('storage/Doctors_images/') . '/' . $exam->doctor->image,
                 'doctor_name' => $exam->doctor->name,
