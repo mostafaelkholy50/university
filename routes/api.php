@@ -29,9 +29,9 @@ Route::post('/resend-code', [AuthControler::class, 'sendcode']);
 Route::post('/login', [AuthControler::class, 'login']);
 //-----------------------News-----------------------
 Route::post('/news/search', [NewsController::class, 'search']);
+Route::get('/news/new', [NewsController::class, 'New']);
 Route::get('/news/{news}', [NewsController::class, 'show']);
 Route::get('/news', [NewsController::class, 'index']);
-Route::get('/news/new', [NewsController::class, 'New']);
 //-----------------------Contact-----------------------
 Route::post('/contact', [ContactController::class, 'store']);
 //-----------------------Courses-----------------------
