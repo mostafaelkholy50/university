@@ -31,6 +31,7 @@ Route::post('/login', [AuthControler::class, 'login']);
 Route::post('/news/search', [NewsController::class, 'search']);
 Route::get('/news/{news}', [NewsController::class, 'show']);
 Route::get('/news', [NewsController::class, 'index']);
+Route::get('/news/new', [NewsController::class, 'New']);
 //-----------------------Contact-----------------------
 Route::post('/contact', [ContactController::class, 'store']);
 //-----------------------Courses-----------------------

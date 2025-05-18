@@ -14,6 +14,53 @@ class NewsController extends Controller
     public function index()
     {
         $news = news::with('commentNews')->get();
+        if ($news->isEmpty()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No news found.',
+            ], 404);
+        }
+
+        $data = $news->map(function ($news) {
+            return [
+                'id' => $news->id,
+                'title' => $news->title,
+                'content' => $news->content,
+                'date' => $news->date,
+                'section' => $news->section,
+                'image' => asset('storage/News_images/' . $news->image),
+                'comments' => $news->commentNews->map(function ($comment) {
+                    return [
+                        'id' => $comment->id,
+                        'user' => [
+                            'id' => $comment->user_id,
+                            'name' => $comment->user->name,
+                            'image' => asset('storage/user/' . $comment->user->image),
+                        ],
+                        'comment' => $comment->comment,
+                        'rate' => $comment->rate,
+                    ];
+                }),
+            ];
+        });
+        return response()->json([
+            'message' => 'News fetched successfully.',
+            'news' => $data,
+            'status' => 200
+        ]);
+    }
+    public function New()
+    {
+        $news = News::with(['commentNews'])
+            ->latest() // يعني by created_at desc
+            ->take(3)   // نجيب بس 3 أخبار
+            ->get();
+        if ($news->isEmpty()) {
+            return response()->json([
+                'message' => 'No news found.',
+                'status' => 404
+            ]);
+        }
 
         $data = $news->map(function ($news) {
             return [
@@ -122,6 +169,12 @@ class NewsController extends Controller
     {
         $searchTerm = $request->input('search');
         $news = news::where('title', 'like', '%' . $searchTerm . '%')->first();
+        if (!$news) {
+            return response()->json([
+                'message' => 'No news found.',
+                'status' => 404
+            ]);
+        }
         return response()->json([
             'message' => 'News fetched successfully.',
             'news' => [
