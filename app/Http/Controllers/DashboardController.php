@@ -47,7 +47,7 @@ class DashboardController extends Controller
                 /
                 COUNT(grades.id)
                 * 100
-            , 2) AS pass_percentage")
+            , 2) AS pass_percentage".'%')
         ])
         ->get();
 
