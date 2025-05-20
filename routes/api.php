@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserControler;
@@ -188,6 +189,10 @@ Route::middleware('auth:admin-api')->prefix('/admin')->group(function () {
     Route::post('/exams', [ExamController::class, 'store']);
     Route::post('/exams/{exam}', [ExamController::class, 'update']);
     Route::delete('/exams/{exam}', [ExamController::class, 'destroy']);
+    //-----------------------Dashboard-----------------------
+    Route::get('/dashboard/Rate', [DashboardController::class, 'successRateBySpecialty']);
+    Route::get('/dashboard/count', [DashboardController::class, 'Count']);
+    
 
 });
 

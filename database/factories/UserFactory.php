@@ -11,34 +11,37 @@ use Illuminate\Support\Str;
  */
 class UserFactory extends Factory
 {
-    /**
-     * The current password being used by the factory.
+  /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
      */
-    protected static ?string $password;
+    protected $model = \App\Models\User::class;
 
     /**
      * Define the model's default state.
      *
-     * @return array<string, mixed>
+     * @return array
      */
-    public function definition(): array
+    public function definition()
     {
+        $sections = ['Computer Science', 'Information Technology', 'Engineering', 'Mechatronics'];
+        $specialties = ['Computer Science', 'Information Technology', 'Engineering', 'Mechatronics'];
+
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
+            'password' => bcrypt('password'), // default password
+            'Phone' => $this->faker->phoneNumber(),
+            'specialty' => $this->faker->randomElement($specialties),
+            'section' => $this->faker->numberBetween(1, 5),
+            'years' => $this->faker->numberBetween(1, 4),
+            // Provide a fake image URL instead of null to satisfy non-null constraint
+            'image' => $this->faker->imageUrl(400, 400, 'people'),
+            'code' => Str::upper(Str::random(6)),
+            'code_created_at' => now(),
             'remember_token' => Str::random(10),
         ];
-    }
-
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
-    public function unverified(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
     }
 }

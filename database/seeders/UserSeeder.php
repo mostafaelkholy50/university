@@ -2,17 +2,21 @@
 
 namespace Database\Seeders;
 
-use App\Models\subjects;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class SubjectsSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-       subjects::factory()->count(50)->create();
+ user::factory(50)->count(50)->create();
+        // $this->call([
+        //     UserSeeder::class,
+        //     GradesSeeder::class,
+        // ]);
     }
 }

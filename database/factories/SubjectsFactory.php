@@ -9,15 +9,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class SubjectsFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition(): array
+    protected $model = \App\Models\subjects::class;
+
+    public function definition()
     {
+        $subjectNames = ['Math', 'Physics', 'Chemistry', 'Biology', 'History', 'Literature', 'Art', 'Geography', 'Computer Science', 'Economics'];
         return [
-            //
+            'name' => $this->faker->unique()->randomElement($subjectNames),
         ];
     }
 }
