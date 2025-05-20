@@ -127,6 +127,7 @@ Route::middleware('auth:admin-api')->prefix('/admin')->group(function () {
     Route::delete('/news/{news}', [NewsController::class, 'destroy']);
     //-----------------------contact-----------------------
     Route::get('/contact', [ContactController::class, 'index']);
+    Route::delete('/contact/all', [ContactController::class, 'deleteAll']);
     //------------------------Doctor-----------------------
     Route::get('/doctor', [DoctorController::class, 'index']);
     Route::get('/doctor/{doctor}', [DoctorController::class, 'showID']);

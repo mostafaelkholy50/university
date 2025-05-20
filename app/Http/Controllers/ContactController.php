@@ -90,4 +90,22 @@ class ContactController extends Controller
     {
         //
     }
+    public function DeleteAll()
+    {
+        $count = Contact::count();
+
+        if ($count === 0) {
+            return response()->json([
+                'message' => 'No contacts to delete.',
+                'status' => 404
+            ]);
+        }
+
+        Contact::truncate();
+
+        return response()->json([
+            'message' => 'All contacts deleted successfully.',
+            'status' => 200
+        ]);
+    }
 }
