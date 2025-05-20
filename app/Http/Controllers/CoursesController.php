@@ -31,6 +31,7 @@ class CoursesController extends Controller
                 'category' => $course->category,
                 'date' => $course->date,
             ];
+            
         });
         return response()->json([
             'message' => 'Courses fetched successfully.',
@@ -38,41 +39,58 @@ class CoursesController extends Controller
             'status' => 200
         ]);
     }
-    public function indexAdmin()
-    {
-        $courses = courses::all();
-        if (!$courses) {
-            return response()->json([
-                'message' => 'No courses found.',
-                'status' => 404
-            ]);
-        }
-        $data = $courses->map(function ($course) {
-            return [
-                'id' => $course->id,
-                'doctor_id' => $course->doctor_id,
-                'title' => $course->title,
-                'description' => $course->description,
-                'image' => asset('storage/Courses_images/' . $course->image),
-                'category' => $course->category,
-                'date' => $course->date,
-                'episodes' => $course->episodes->map(function ($ep) {
-                    return [
-                        'id' => $ep->id,
-                        'course_id' => $ep->course_id,
-                        'title' => $ep->title,
-                        'description' => $ep->description,
-                        'Video' => url('storage/' . $ep->Video),
-                    ];
-                }),
-            ];
-        });
+   public function indexAdmin()
+{
+    $courses = courses::all();
+
+    if ($courses->isEmpty()) {
         return response()->json([
-            'message' => 'Courses fetched successfully.',
-            'courses' => $data,
-            'status' => 200
+            'message' => 'No courses found.',
+            'status' => 404
         ]);
     }
+
+    $data = $courses->map(function ($course) {
+        return [
+            'id' => $course->id,
+            'doctor_id' => $course->doctor_id,
+            'title' => $course->title,
+            'description' => $course->description,
+            'image' => asset('storage/Courses_images/' . $course->image),
+            'category' => $course->category,
+            'date' => $course->date,
+            'episodes' => $course->episodes->map(function ($ep) {
+                return [
+                    'id' => $ep->id,
+                    'course_id' => $ep->course_id,
+                    'title' => $ep->title,
+                    'description' => $ep->description,
+                    'Video' => url('storage/' . $ep->Video),
+                ];
+            }),
+            'comments' => $course->comments->map(function ($comment) {
+                return [
+                    'id' => $comment->id,
+                    'course_id' => $comment->course_id,
+                    'user' => [
+                        'id' => $comment->user->id,
+                        'name' => $comment->user->name,
+                        'image' => asset('storage/user/' . $comment->user->image),
+                    ],
+                    'comment' => $comment->comment,
+                    'rate' => $comment->rate,
+                ];
+            }),
+        ];
+    });
+
+    return response()->json([
+        'message' => 'Courses fetched successfully.',
+        'courses' => $data,
+        'status' => 200
+    ]);
+}
+
     /**
      * Display a listing of the resource.
      */
@@ -101,6 +119,19 @@ class CoursesController extends Controller
                         'title' => $ep->title,
                         'description' => $ep->description,
                         'Video' => url('storage/' . $ep->Video),
+                    ];
+                }),
+                'comments' => $course->comments->map(function ($comment) {
+                    return [
+                        'id' => $comment->id,
+                        'course_id' => $comment->course_id,
+                        'user' => [
+                            'id' => $comment->user->id,
+                            'name' => $comment->user->name,
+                            'image' => asset('storage/user/' . $comment->user->image),
+                        ],
+                        'comment' => $comment->comment,
+                        'rate' => $comment->rate,
                     ];
                 }),
             ];
