@@ -53,7 +53,7 @@ class NewsController extends Controller
     {
         $news = News::with(['commentNews'])
             ->latest() // يعني by created_at desc
-            ->take(3)   // نجيب بس 3 أخبار
+            ->take(2)   // نجيب بس 3 أخبار
             ->get();
         if ($news->isEmpty()) {
             return response()->json([

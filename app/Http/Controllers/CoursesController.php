@@ -14,7 +14,7 @@ class CoursesController extends Controller
      */
     public function index()
     {
-       $courses = courses::all();
+        $courses = courses::all();
         if (!$courses) {
             return response()->json([
                 'message' => 'No courses found.',
@@ -40,7 +40,7 @@ class CoursesController extends Controller
     }
     public function indexAdmin()
     {
-       $courses = courses::all();
+        $courses = courses::all();
         if (!$courses) {
             return response()->json([
                 'message' => 'No courses found.',
@@ -58,11 +58,11 @@ class CoursesController extends Controller
                 'date' => $course->date,
                 'episodes' => $course->episodes->map(function ($ep) {
                     return [
-                        'id'          => $ep->id,
-                        'course_id'   => $ep->course_id,
-                        'title'       => $ep->title,
+                        'id' => $ep->id,
+                        'course_id' => $ep->course_id,
+                        'title' => $ep->title,
                         'description' => $ep->description,
-                        'Video'       => url('storage/' . $ep->Video),
+                        'Video' => url('storage/' . $ep->Video),
                     ];
                 }),
             ];
@@ -78,7 +78,7 @@ class CoursesController extends Controller
      */
     public function ShowDoctor()
     {
-       $courses = courses::where('doctor_id', auth()->user()->id)->get();
+        $courses = courses::where('doctor_id', auth()->user()->id)->get();
         if (!$courses) {
             return response()->json([
                 'message' => 'No courses found.',
@@ -94,6 +94,15 @@ class CoursesController extends Controller
                 'image' => asset('storage/Courses_images/' . $course->image),
                 'category' => $course->category,
                 'date' => $course->date,
+                'episodes' => $course->episodes->map(function ($ep) {
+                    return [
+                        'id' => $ep->id,
+                        'course_id' => $ep->course_id,
+                        'title' => $ep->title,
+                        'description' => $ep->description,
+                        'Video' => url('storage/' . $ep->Video),
+                    ];
+                }),
             ];
         });
         return response()->json([
@@ -131,7 +140,7 @@ class CoursesController extends Controller
             $imageName = time() . '.' . $request->image->extension();
             $request->image->move(public_path('storage/Courses_images/'), $imageName);
         }
-        $course->image = $imageName ;
+        $course->image = $imageName;
         $course->category = $request->category;
         $course->date = $request->date;
         $course->save();
@@ -150,7 +159,7 @@ class CoursesController extends Controller
             ],
         ], 201);
     }
-  /**
+    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, courses $courses)
@@ -215,7 +224,7 @@ class CoursesController extends Controller
             $imageName = time() . '.' . $request->image->extension();
             $request->image->move(public_path('storage/Courses_images/'), $imageName);
         }
-        $course->image = $imageName ;
+        $course->image = $imageName;
         $course->category = $request->category;
         $course->date = $request->date;
         $course->save();
@@ -245,9 +254,9 @@ class CoursesController extends Controller
 
         $episodesData = $courses->episodes->map(function ($ep) {
             return [
-                'id'          => $ep->id,
-                'course_id'   => $ep->course_id,
-                'title'       => $ep->title,
+                'id' => $ep->id,
+                'course_id' => $ep->course_id,
+                'title' => $ep->title,
                 'description' => $ep->description,
             ];
         });
@@ -255,15 +264,15 @@ class CoursesController extends Controller
 
         $commentsData = $courses->comments->map(function ($comment) {
             return [
-                'id'      => $comment->id,
+                'id' => $comment->id,
                 'course_id' => $comment->course_id,
-                'user'    => [
-                    'id'    => $comment->user->id,
-                    'name'  => $comment->user->name,
+                'user' => [
+                    'id' => $comment->user->id,
+                    'name' => $comment->user->name,
                     'image' => asset('storage/user/' . $comment->user->image),
                 ],
                 'comment' => $comment->comment,
-                'rate'    => $comment->rate,
+                'rate' => $comment->rate,
             ];
         });
 
@@ -271,25 +280,25 @@ class CoursesController extends Controller
 
         return response()->json([
             'message' => 'Course fetched successfully.',
-            'course'  => [
-                'id'           => $courses->id,
-                'doctor'       => [
-                    'id'             => $doctor->id,
-                    'name'           => $doctor->name,
-                    'email'          => $doctor->email,
-                    'image'          => asset('storage/Doctors_images/' . $doctor->image),
+            'course' => [
+                'id' => $courses->id,
+                'doctor' => [
+                    'id' => $doctor->id,
+                    'name' => $doctor->name,
+                    'email' => $doctor->email,
+                    'image' => asset('storage/Doctors_images/' . $doctor->image),
                     'specialization' => $doctor->specialization,
-                    'phone'          => $doctor->phone,
+                    'phone' => $doctor->phone,
                 ],
-                'title'        => $courses->title,
-                'description'  => $courses->description,
-                'image'        => asset('storage/Courses_images/' . $courses->image),
-                'category'     => $courses->category,
-                'date'         => $courses->date,
-                'episodes'     => $episodesData,
+                'title' => $courses->title,
+                'description' => $courses->description,
+                'image' => asset('storage/Courses_images/' . $courses->image),
+                'category' => $courses->category,
+                'date' => $courses->date,
+                'episodes' => $episodesData,
             ],
             'comments' => $commentsData,
-            'status'   => 200
+            'status' => 200
         ], 200);
     }
     /**
@@ -302,26 +311,26 @@ class CoursesController extends Controller
 
         $episodesData = $courses->episodes->map(function ($ep) {
             return [
-                'id'          => $ep->id,
-                'course_id'   => $ep->course_id,
-                'title'       => $ep->title,
+                'id' => $ep->id,
+                'course_id' => $ep->course_id,
+                'title' => $ep->title,
                 'description' => $ep->description,
-                'Video'       => url('storage/' . $ep->Video),
+                'Video' => url('storage/' . $ep->Video),
             ];
         });
 
 
         $commentsData = $courses->comments->map(function ($comment) {
             return [
-                'id'      => $comment->id,
+                'id' => $comment->id,
                 'course_id' => $comment->course_id,
-                'user'    => [
-                    'id'    => $comment->user->id,
-                    'name'  => $comment->user->name,
+                'user' => [
+                    'id' => $comment->user->id,
+                    'name' => $comment->user->name,
                     'image' => asset('storage/user/' . $comment->user->image),
                 ],
                 'comment' => $comment->comment,
-                'rate'    => $comment->rate,
+                'rate' => $comment->rate,
             ];
         });
 
@@ -329,25 +338,25 @@ class CoursesController extends Controller
 
         return response()->json([
             'message' => 'Course fetched successfully.',
-            'course'  => [
-                'id'           => $courses->id,
-                'doctor'       => [
-                    'id'             => $doctor->id,
-                    'name'           => $doctor->name,
-                    'email'          => $doctor->email,
-                    'image'          => asset('storage/Doctors_images/' . $doctor->image),
+            'course' => [
+                'id' => $courses->id,
+                'doctor' => [
+                    'id' => $doctor->id,
+                    'name' => $doctor->name,
+                    'email' => $doctor->email,
+                    'image' => asset('storage/Doctors_images/' . $doctor->image),
                     'specialization' => $doctor->specialization,
-                    'phone'          => $doctor->phone,
+                    'phone' => $doctor->phone,
                 ],
-                'title'        => $courses->title,
-                'description'  => $courses->description,
-                'image'        => asset('storage/Courses_images/' . $courses->image),
-                'category'     => $courses->category,
-                'date'         => $courses->date,
-                'episodes'     => $episodesData,
+                'title' => $courses->title,
+                'description' => $courses->description,
+                'image' => asset('storage/Courses_images/' . $courses->image),
+                'category' => $courses->category,
+                'date' => $courses->date,
+                'episodes' => $episodesData,
             ],
             'comments' => $commentsData,
-            'status'   => 200
+            'status' => 200
         ], 200);
     }
 
