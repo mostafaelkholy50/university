@@ -49,7 +49,7 @@ Route::middleware('auth:doctor-api')->prefix('/doctor')->group(function () {
     Route::post('/', [DoctorController::class, 'updateAuth']);
     Route::delete('/', [DoctorController::class, 'destroyAuth']);
     //-----------------------Courses-----------------------
-    Route::get('/courses', [CoursesController::class, 'index']);
+    Route::get('/courses', [CoursesController::class, 'indexAdmin']);
     Route::get('/courses/Auth', [CoursesController::class, 'ShowDoctor']);
     Route::get('/courses/{courses}', [CoursesController::class, 'show']);
     Route::post('/courses', [CoursesController::class, 'store']);
