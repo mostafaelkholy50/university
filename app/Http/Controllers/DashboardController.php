@@ -9,6 +9,21 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
+      public function stats()
+    {
+        // نجمع عدد السجلات لكل قيمة grade
+        $data = grades::select('grade', DB::raw('COUNT(*) as count'))
+            ->groupBy('grade')
+            ->orderByRaw("FIELD(grade, 'Excellent','Very Good','Good','Pass','Fail')")
+            ->get();
+
+        // نرجّع JSON في الشكل المطلوب
+        return response()->json([
+            'status' => 200,
+            'message' => 'Grades statistics fetched successfully.',
+            'grades' => $data
+        ]);
+    }
     public function Count(){
         $userCount = DB::table('users')->count();
         $doctorCount = DB::table('doctors')->count();

@@ -192,7 +192,8 @@ Route::middleware('auth:admin-api')->prefix('/admin')->group(function () {
     //-----------------------Dashboard-----------------------
     Route::get('/dashboard/Rate', [DashboardController::class, 'successRateBySpecialty']);
     Route::get('/dashboard/count', [DashboardController::class, 'Count']);
-    
+    Route::get('/dashboard/stats', [DashboardController::class, 'stats']);
+
 
 });
 
