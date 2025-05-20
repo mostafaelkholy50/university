@@ -109,6 +109,9 @@ Route::post('/admin/logout', [AuthAdminController::class, 'logout']);
 Route::post('/admin/register', [AuthAdminController::class, 'register']);
 
 Route::middleware('auth:admin-api')->prefix('/admin')->group(function () {
+        //-----------------------Comments-----------------------
+    Route::delete('/news/comments/{commentNews}', [CommentNewsController::class, 'destroy']);
+    Route::delete('/courses/comments/{commentCourse}', [CommentCourseController::class, 'destroy']);
     //-----------------------User-----------------------
     Route::get('/user', [UserControler::class, 'index']);
     Route::post('/user', [UserControler::class, 'store']);
@@ -184,5 +187,6 @@ Route::middleware('auth:admin-api')->prefix('/admin')->group(function () {
     Route::post('/exams', [ExamController::class, 'store']);
     Route::post('/exams/{exam}', [ExamController::class, 'update']);
     Route::delete('/exams/{exam}', [ExamController::class, 'destroy']);
+
 });
 
